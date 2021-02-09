@@ -46,7 +46,7 @@
     "fast-safe-stringify": "^2.0.7",
     "fp-ts": "^2.8.4",
     "fp-ts-contrib": "^0.1.21",
-    "husky": "4.3.8",
+    "husky": "5.0.9",
     "jest": "^26.6.0",
     "lerna": "^3.22.1",
     "prettier": "^2.1.2",
@@ -55,7 +55,7 @@
     "ts-jest": "^26.4.1",
     "ts-node": "^9.0.0",
     "ttypescript": "^1.5.12",
-    "typescript": "4.2.0-dev.20210203",
+    "typescript": "4.2.0-dev.20210208",
     "ultra-runner": "^3.5.0",
     "yarn-deduplicate": "^3.0.0"
   },
