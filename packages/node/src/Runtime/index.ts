@@ -189,7 +189,13 @@ export class NodeRuntime<R> {
   }
 }
 
-export const nodeRuntime = new NodeRuntime(defaultRuntime.traceRenderer(nodeTracer))
+export const nodeRuntime = new NodeRuntime(
+  defaultRuntime.traceRenderer({
+    renderTrace: nodeTracer,
+    renderError: Cause.defaultRenderer.renderError,
+    renderUnknown: Cause.defaultRenderer.renderUnknown
+  })
+)
 
 export const {
   custom: { run, runAsap, runCancel, runFiber, runPromise, runPromiseExit },

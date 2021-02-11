@@ -295,18 +295,18 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@effect-ts/core@^0.14.6":
-  version "0.14.6"
-  resolved "https://registry.yarnpkg.com/@effect-ts/core/-/core-0.14.6.tgz#4a6be336da6db22a267a83b6a0ba8c8909ff61a1"
-  integrity sha512-qdUmZkKo8anO2vf7l2Fp6635Q1nkR8P+8r86abrfEh0LBcdeGxRq/icvRh/aHg+ARl1Gqpe1LbWwBFP9jovKyA==
+"@effect-ts/core@^0.15.0":
+  version "0.15.0"
+  resolved "https://registry.yarnpkg.com/@effect-ts/core/-/core-0.15.0.tgz#2d6650585fbb558d5e9b0abf6fcf89b65706f66a"
+  integrity sha512-GNgPOJIiOFFWRIhpLASfWoOp5kkMELZ9kvzj+3qIq2fegpCnp544UqNsSRULKum3xQcGZ4tFSqiTXis4Bv3AjA==
   dependencies:
-    "@effect-ts/system" "^0.11.6"
+    "@effect-ts/system" "^0.12.0"
     "@effect-ts/tracing-utils" "^0.3.0"
 
-"@effect-ts/system@^0.11.6":
-  version "0.11.6"
-  resolved "https://registry.yarnpkg.com/@effect-ts/system/-/system-0.11.6.tgz#697ddbc981df33558e3b8b0d23f5e7d9e7005ee1"
-  integrity sha512-EU+Fbgzvwsobk28WzkyFuTP1VxsDaNhlpYyA8q//cbfFjU8L4UTfyvLGIzPXZdSKJwiePvlbQ0bWI8BEfUlDGg==
+"@effect-ts/system@^0.12.0":
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/@effect-ts/system/-/system-0.12.0.tgz#7682e7fbe5cd5880c2c594eb7c737cd673735b66"
+  integrity sha512-TsP/OxnZLCblzzb+KfE0iNMNl6g+kZyQcNHA5Al8eZzGuXKjjS3gqmqmAT28k3D0YIcy6Wkv80Ziw1+w7qWKBQ==
   dependencies:
     "@effect-ts/tracing-utils" "^0.3.0"
 
@@ -4106,9 +4106,9 @@ globrex@^0.1.2:
   integrity sha512-uHJgbwAMwNFf5mLst7IWLNg14x1CkeqglJb/K3doi4dw6q2IvAAmM/Y81kevy83wP+Sst+nutFTYOGg3d1lsxg==
 
 graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.2, graceful-fs@^4.1.6, graceful-fs@^4.2.0, graceful-fs@^4.2.2, graceful-fs@^4.2.4:
-  version "4.2.5"
-  resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.5.tgz#bc18864a6c9fc7b303f2e2abdb9155ad178fbe29"
-  integrity sha512-kBBSQbz2K0Nyn+31j/w36fUfxkBW9/gfwRWdUY1ULReH3iokVJgddZAFcD1D0xlgTmFxJCbUkUclAlc6/IDJkw==
+  version "4.2.6"
+  resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.6.tgz#ff040b2b0853b23c3d31027523706f1885d76bee"
+  integrity sha512-nTnJ528pbqxYanhpDYsi4Rd8MAeaBA67+RZ10CM1m3bTAVFEDcd5AuA4a6W5YkGZ1iNXHzZz8T6TBKLeBuNriQ==
 
 growly@^1.3.0:
   version "1.3.0"
@@ -4495,7 +4495,7 @@ is-ci@^2.0.0:
   dependencies:
     ci-info "^2.0.0"
 
-is-core-module@^2.1.0:
+is-core-module@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/is-core-module/-/is-core-module-2.2.0.tgz#97037ef3d52224d85163f5597b2b63d9afed981a"
   integrity sha512-XRAfAdyyY5F5cOXn7hYQDqh2Xmii+DEfIcQGxK/uNwMHhIkPWO0g8msXcbzLe+MpGoR951MlqM/2iIlU4vKDdQ==
@@ -7118,11 +7118,11 @@ resolve-url@^0.2.1:
   integrity sha1-LGN/53yJOv0qZj/iGqkIAGjiBSo=
 
 resolve@>=1.9.0, resolve@^1.1.7, resolve@^1.10.0, resolve@^1.13.1, resolve@^1.17.0, resolve@^1.18.1, resolve@^1.3.2:
-  version "1.19.0"
-  resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.19.0.tgz#1af5bf630409734a067cae29318aac7fa29a267c"
-  integrity sha512-rArEXAgsBG4UgRGcynxWIWKFvh/XZCcS8UJdHhwy91zwAvCZIbcs+vAbflgBnNjYMs/i/i+/Ux6IZhML1yPvxg==
+  version "1.20.0"
+  resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.20.0.tgz#629a013fb3f70755d6f0b7935cc1c2c5378b1975"
+  integrity sha512-wENBPt4ySzg4ybFQW2TT1zMQucPK95HSh/nq2CFTZVOGut2+pQvSsgtda4d26YrYcr067wjbmzOG8byDPBX63A==
   dependencies:
-    is-core-module "^2.1.0"
+    is-core-module "^2.2.0"
     path-parse "^1.0.6"
 
 restore-cursor@^2.0.0:
@@ -7983,10 +7983,10 @@ trim-off-newlines@^1.0.0:
   resolved "https://registry.yarnpkg.com/trim-off-newlines/-/trim-off-newlines-1.0.1.tgz#9f9ba9d9efa8764c387698bcbfeb2c848f11adb3"
   integrity sha1-n5up2e+odkw4dpi8v+sshI8RrbM=
 
-ts-jest@^26.4.1:
-  version "26.5.0"
-  resolved "https://registry.yarnpkg.com/ts-jest/-/ts-jest-26.5.0.tgz#3e3417d91bc40178a6716d7dacc5b0505835aa21"
-  integrity sha512-Ya4IQgvIFNa2Mgq52KaO8yBw2W8tWp61Ecl66VjF0f5JaV8u50nGoptHVILOPGoI7SDnShmEqnYQEmyHdQ+56g==
+ts-jest@^26.5.1:
+  version "26.5.1"
+  resolved "https://registry.yarnpkg.com/ts-jest/-/ts-jest-26.5.1.tgz#4d53ee4481552f57c1624f0bd3425c8b17996150"
+  integrity sha512-G7Rmo3OJMvlqE79amJX8VJKDiRcd7/r61wh9fnvvG8cAjhA9edklGw/dCxRSQmfZ/z8NDums5srSVgwZos1qfg==
   dependencies:
     "@types/jest" "26.x"
     bs-logger "0.x"
@@ -8151,9 +8151,9 @@ typescript@4.2.0-dev.20210208:
   integrity sha512-zZD4z9MS8iy9dPxwBeEcQDemi13rfdAk7oCyAaiMQXsw1rcdmdsNGjpaQ8OZiY3I5Y/vaoDCu7yBB1ZaNSemLA==
 
 typescript@next:
-  version "4.2.0-dev.20210209"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.2.0-dev.20210209.tgz#251d733f41a3882a1fa08d8e0f2acf7226772377"
-  integrity sha512-wnZgde+d2MNeUnbdan2PpQofKYMZdcKVFD769BSMHwtNVJzT/rnHQeoQUpkgj8sumV/NgQx4nwVSWrhqmzqslA==
+  version "4.3.0-dev.20210211"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.3.0-dev.20210211.tgz#4ad889da82e02dc74df155d9f31c28a3f7154403"
+  integrity sha512-Xy5pmfBIAYjHItLhqGASnEy3TVzUQNr82QDFspuSnU05Dpei2oZz7mw9FSyNWN0zddZ2twctKKQpYpv2nuRfZA==
 
 uglify-js@^3.1.4:
   version "3.10.1"
