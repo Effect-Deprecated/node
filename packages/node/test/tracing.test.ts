@@ -43,7 +43,13 @@ describe("Tracing & Optimizations", () => {
 
     Ex.assertsFailure(res)
 
-    console.log(C.pretty(res.cause, customNodeRender))
+    console.log(
+      C.pretty(res.cause, {
+        renderError: C.defaultRenderer.renderError,
+        renderUnknown: C.defaultRenderer.renderUnknown,
+        renderTrace: customNodeRender
+      })
+    )
 
     expect(C.untraced(res.cause)).toEqual(C.fail("error: (4)"))
   })
@@ -61,6 +67,12 @@ describe("Tracing & Optimizations", () => {
 
     Ex.assertsFailure(res)
 
-    console.log(C.pretty(res.cause, customNodeRender))
+    console.log(
+      C.pretty(res.cause, {
+        renderError: C.defaultRenderer.renderError,
+        renderUnknown: C.defaultRenderer.renderUnknown,
+        renderTrace: customNodeRender
+      })
+    )
   })
 })
