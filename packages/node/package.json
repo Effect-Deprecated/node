@@ -26,8 +26,8 @@
   },
   "sideEffects": false,
   "peerDependencies": {
-    "@effect-ts/core": "^0.17.0",
-    "@effect-ts/tracing-utils": "^0.3.0"
+    "@effect-ts/core": "^0.19.0",
+    "@effect-ts/tracing-utils": "^0.4.1"
   },
   "config": {
     "modules": [
