@@ -1,18 +1,9 @@
-import "../src/Modules/Traced"
+import "@effect-ts/tracing-utils/Enable"
 
 import * as T from "@effect-ts/core/Effect"
 import * as C from "@effect-ts/core/Effect/Cause"
 import * as Ex from "@effect-ts/core/Effect/Exit"
-import type { Trace } from "@effect-ts/core/Effect/Fiber"
 import { pipe } from "@effect-ts/core/Function"
-
-//import * as p from "path"
-import { prettyTraceNode } from "../src/Runtime"
-
-const customNodeRender = (_: Trace): string =>
-  prettyTraceNode(_, (path) =>
-    path.replace("/build/", "/").replace("/_traced/", "/").replace("_src", "src")
-  )
 
 describe("Tracing & Optimizations", () => {
   it("should collect traces", async () => {
@@ -47,7 +38,7 @@ describe("Tracing & Optimizations", () => {
       C.pretty(res.cause, {
         renderError: C.defaultRenderer.renderError,
         renderUnknown: C.defaultRenderer.renderUnknown,
-        renderTrace: customNodeRender
+        renderTrace: C.defaultRenderer.renderTrace
       })
     )
 
@@ -71,7 +62,7 @@ describe("Tracing & Optimizations", () => {
       C.pretty(res.cause, {
         renderError: C.defaultRenderer.renderError,
         renderUnknown: C.defaultRenderer.renderUnknown,
-        renderTrace: customNodeRender
+        renderTrace: C.defaultRenderer.renderTrace
       })
     )
   })
