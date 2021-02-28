@@ -10,6 +10,7 @@ import * as L from "@effect-ts/core/List"
 import * as S from "@effect-ts/core/Sync"
 import * as Cause from "@effect-ts/system/Cause"
 import * as Fiber from "@effect-ts/system/Fiber"
+import * as Supervisor from "@effect-ts/system/Supervisor"
 import { AtomicBoolean } from "@effect-ts/system/Support/AtomicBoolean"
 import * as path from "path"
 
@@ -18,9 +19,9 @@ export function defaultTeardown(
   id: Fiber.FiberID,
   onExit: (status: number) => void
 ) {
-  T.run(interruptAllAs(id)(Fiber._tracing.running), () => {
+  T.run(interruptAllAs(id)(Supervisor.mainFibers), () => {
     setTimeout(() => {
-      if (Fiber._tracing.running.size === 0) {
+      if (Supervisor.mainFibers.size === 0) {
         onExit(status)
       } else {
         defaultTeardown(status, id, onExit)
@@ -126,8 +127,8 @@ export function prettyTraceNodeSafe(
   })
 }
 
-export class NodeRuntime<R> {
-  constructor(readonly custom: CustomRuntime<R>) {
+export class NodeRuntime<R, X> {
+  constructor(readonly custom: CustomRuntime<R, X>) {
     this.runMain = this.runMain.bind(this)
   }
 
@@ -140,18 +141,17 @@ export class NodeRuntime<R> {
    *
    * Note: this should be used only in node.js as it depends on global process
    */
-  runMain<E>(
-    effect: T.Effect<T.DefaultEnv, E, void>,
+  runMain<E, A>(
+    effect: T.Effect<R, E, A>,
     customHook: (cont: NodeJS.SignalsListener) => NodeJS.SignalsListener = defaultHook,
     customTeardown: typeof defaultTeardown = defaultTeardown
   ): void {
-    const context = this.custom.fiberContext<E, void>()
-
     const onExit = (s: number) => {
       process.exit(s)
     }
 
-    context.evaluateLater(effect[T._I])
+    const context = this.custom.runFiber(effect)
+
     context.runAsync((exit) => {
       switch (exit._tag) {
         case "Failure": {
@@ -159,7 +159,7 @@ export class NodeRuntime<R> {
             customTeardown(0, context.id, onExit)
             break
           } else {
-            console.error(Cause.pretty(exit.cause, this.custom.platform.renderer))
+            console.error(Cause.pretty(exit.cause, this.custom.platform.value.renderer))
             customTeardown(1, context.id, onExit)
             break
           }
