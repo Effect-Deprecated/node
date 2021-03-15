@@ -333,14 +333,14 @@
     minimist "^1.2.0"
 
 "@effect-ts/core@^0.26.0":
-  version "0.26.1"
-  resolved "https://registry.yarnpkg.com/@effect-ts/core/-/core-0.26.1.tgz#9a0aeda34ffc0f01f29e8232ce77408df3042209"
-  integrity sha512-hxVdP/pIhKG3Khsznh44R3t6ZBlq46y8fhhQqG8vyJkBlXJ/8foY6h6/ERo+SW6/CP0Eikw8pm0QQHtAWJebVw==
+  version "0.26.6"
+  resolved "https://registry.yarnpkg.com/@effect-ts/core/-/core-0.26.6.tgz#f53f9820edcd774c96ef30abb6e4e808a80d4fcb"
+  integrity sha512-CiBixEROKtGJm0Uspm8NeQtf5IwljXY5nv8/gQVDXlB4Qhjx/1VVyVb9ECs2JG1cqtgIgvz/ClneMDhnH7GVPQ==
   dependencies:
-    "@effect-ts/system" "^0.23.1"
+    "@effect-ts/system" "^0.23.4"
     "@effect-ts/tracing-utils" "^0.4.3"
 
-"@effect-ts/system@^0.23.0", "@effect-ts/system@^0.23.1":
+"@effect-ts/system@^0.23.0", "@effect-ts/system@^0.23.4":
   version "0.23.4"
   resolved "https://registry.yarnpkg.com/@effect-ts/system/-/system-0.23.4.tgz#9574ab679a86f2de70cb060a5e7b9100749684bf"
   integrity sha512-X8VGpb4EYUOiZc8QKWCszxqFrNNJG4AR3NyqW750h+h0k6F77Ot0jggbO+fZWOgFFk0QhAqHHdm/aJMOMpBuyA==
@@ -2984,7 +2984,8 @@ dot-prop@^6.0.1:
 
 "dtslint@github:gcanti/dtslint":
   version "0.4.4"
-  resolved "https://codeload.github.com/gcanti/dtslint/tar.gz/ef28f0ad1d3bd64b8367f6f543cf6fd3b9b09c1b"
+  uid "824af7cf7780df9840b87d126835a40da740c064"
+  resolved "https://codeload.github.com/gcanti/dtslint/tar.gz/824af7cf7780df9840b87d126835a40da740c064"
   dependencies:
     fs-extra "^6.0.1"
     parsimmon "^1.12.0"
@@ -3204,9 +3205,9 @@ eslint-plugin-import@^2.22.1:
     tsconfig-paths "^3.9.0"
 
 eslint-plugin-jest@^24.1.0:
-  version "24.1.9"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-24.1.9.tgz#b8ccd3e3d1cc429ce14821dafd5bcc39766eafd1"
-  integrity sha512-dobHZxHQGiwpNuI/CNU69Q0T8oBWfJjhroOPD0vBUBbAuKzzjcflT7dqKj6NBvhNs5TfdBofX9GGswmQL2iKzQ==
+  version "24.3.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-24.3.1.tgz#c8df037847b83397940bef7fbc2cc168ab466bcc"
+  integrity sha512-RQt59rfMSHyvedImT72iaf8JcvCcR4P7Uq499dALtjY8mrCjbwWrFi1UceG4sid2wVIeDi+0tjxXZ8CZEVO7Zw==
   dependencies:
     "@typescript-eslint/experimental-utils" "^4.0.1"
 
