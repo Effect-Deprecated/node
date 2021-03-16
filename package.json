@@ -20,9 +20,9 @@
   "devDependencies": {
     "@babel/cli": "^7.13.0",
     "@babel/core": "^7.13.8",
-    "@effect-ts/core": "^0.27.0",
-    "@effect-ts/system": "^0.24.0",
-    "@effect-ts/tracing-plugin": "^0.7.0",
+    "@effect-ts/core": "^0.27.2",
+    "@effect-ts/system": "^0.24.2",
+    "@effect-ts/tracing-plugin": "^0.7.1",
     "@effect-ts/tracing-utils": "^0.5.0",
     "@types/cpx": "^1.5.1",
     "@types/glob": "^7.1.3",
