@@ -198,6 +198,6 @@ export const nodeRuntime = new NodeRuntime(
 )
 
 export const {
-  custom: { run, runAsap, runCancel, runFiber, runPromise, runPromiseExit },
+  custom: { run, runCancel, runFiber, runPromise, runPromiseExit },
   runMain
 } = nodeRuntime

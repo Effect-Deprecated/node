@@ -15,12 +15,12 @@ module.exports = {
   ],
   verbose: true,
   moduleNameMapper: {
-    "@effect-ts/node/(.*)$": "<rootDir>/packages/node/build/_traced/$1",
-    "@effect-ts/node$": "<rootDir>/packages/node/build/_traced",
-    "@effect-ts/system/(.*)$": "<rootDir>/node_modules/@effect-ts/system/_traced/$1",
-    "@effect-ts/system$": "<rootDir>/node_modules/@effect-ts/system/_traced",
-    "@effect-ts/core/(.*)$": "<rootDir>/node_modules/@effect-ts/core/_traced/$1",
-    "@effect-ts/core$": "<rootDir>/node_modules/@effect-ts/core/_traced"
+    "@effect-ts/node/(.*)$": "<rootDir>/packages/node/build/$1",
+    "@effect-ts/node$": "<rootDir>/packages/node/build",
+    "@effect-ts/system/(.*)$": "<rootDir>/node_modules/@effect-ts/system/$1",
+    "@effect-ts/system$": "<rootDir>/node_modules/@effect-ts/system",
+    "@effect-ts/core/(.*)$": "<rootDir>/node_modules/@effect-ts/core/$1",
+    "@effect-ts/core$": "<rootDir>/node_modules/@effect-ts/core"
   },
   globals: {
     "ts-jest": {
