@@ -47,35 +47,31 @@ export function prettyTraceNode(
 }
 
 export function prettyLocationNode(
-  traceElement: Fiber.TraceElement,
+  traceElement: Fiber.SourceLocation,
   adapt: (path: string, mod?: string) => string
 ) {
   try {
-    if (traceElement._tag === "SourceLocation") {
-      const isModule = traceElement.location.match(/\((.*)\): (.*):(\d+):(\d+)/)
+    const isModule = traceElement.location.match(/\((.*)\): (.*):(\d+):(\d+)/)
 
-      if (isModule) {
-        const [, mod, file, line_, col] = isModule
+    if (isModule) {
+      const [, mod, file, line_, col] = isModule
+      const line = parseInt(line_)
+      const modulePath = require.resolve(`${mod}/package.json`)
+      const realPath = adapt(path.join(modulePath, "..", file), mod)
+
+      return `${realPath}:${line}:${col}`
+    } else {
+      const isPath = traceElement.location.match(/(.*):(\d+):(\d+)/)
+      if (isPath) {
+        const [, file, line_, col] = isPath
         const line = parseInt(line_)
-        const modulePath = require.resolve(`${mod}/package.json`)
-        const realPath = adapt(path.join(modulePath, "..", file), mod)
-
-        return `${realPath}:${line}:${col}`
-      } else {
-        const isPath = traceElement.location.match(/(.*):(\d+):(\d+)/)
-        if (isPath) {
-          const [, file, line_, col] = isPath
-          const line = parseInt(line_)
-          return `${path.join(process.cwd(), file)}:${line}:${col}`
-        }
+        return `${path.join(process.cwd(), file)}:${line}:${col}`
       }
     }
   } catch {
     //
   }
-  return traceElement._tag === "NoLocation"
-    ? "No Location Present"
-    : `${traceElement.location}`
+  return traceElement.location
 }
 
 export function prettyTraceNodeSafe(
@@ -83,16 +79,22 @@ export function prettyTraceNodeSafe(
   adapt: (path: string, mod?: string) => string
 ): S.UIO<string> {
   return S.gen(function* ($) {
-    const execTrace = !L.isEmpty(trace.executionTrace)
-    const stackTrace = !L.isEmpty(trace.stackTrace)
+    const exec = L.filter_(
+      trace.executionTrace,
+      (t): t is Fiber.SourceLocation => t._tag === "SourceLocation"
+    )
+    const stack = L.filter_(
+      trace.stackTrace,
+      (t): t is Fiber.SourceLocation => t._tag === "SourceLocation"
+    )
+    const execTrace = !L.isEmpty(exec)
+    const stackTrace = !L.isEmpty(stack)
 
     const execPrint = execTrace
       ? [
           `Fiber: ${Fiber.prettyFiberId(trace.fiberId)} Execution trace:`,
           "",
-          ...L.toArray(
-            L.map_(trace.executionTrace, (a) => `  ${prettyLocationNode(a, adapt)}`)
-          )
+          ...L.toArray(L.map_(exec, (a) => `  ${prettyLocationNode(a, adapt)}`))
         ]
       : [`Fiber: ${Fiber.prettyFiberId(trace.fiberId)} Execution trace: <empty trace>`]
 
@@ -102,7 +104,7 @@ export function prettyTraceNodeSafe(
           "",
           ...L.toArray(
             L.map_(
-              trace.stackTrace,
+              stack,
               (e) => `  a future continuation at ${prettyLocationNode(e, adapt)}`
             )
           )
