@@ -29,11 +29,7 @@
     "noImplicitThis": true,
     "strictNullChecks": true,
     "baseUrl": ".",
-    "paths": {
-      "@effect-ts/node/*": ["packages/node/build/*"],
-      "@effect-ts/node": ["packages/node/build"]
-    },
-    "target": "ES2017"
+    "target": "ES2018"
   },
   "exclude": ["node_modules", "build", "lib"]
 }
