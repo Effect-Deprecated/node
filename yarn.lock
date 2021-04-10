@@ -329,10 +329,10 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@effect-ts/build-utils@^0.8.7":
-  version "0.8.8"
-  resolved "https://registry.yarnpkg.com/@effect-ts/build-utils/-/build-utils-0.8.8.tgz#c6e7debf918c03901752e93a939b25b3a6506d16"
-  integrity sha512-085EHsKxL6EOAfmcDokfJTwP8vOO3C3xHQVAF9lfCkaQfUWoLFAylovQwnwY9ETVPaHwiKEcIOtaQU+vN96Cyw==
+"@effect-ts/build-utils@^0.9.0":
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/@effect-ts/build-utils/-/build-utils-0.9.0.tgz#1a6dd9b5989e3b5de966da6e8e234299c320c249"
+  integrity sha512-Sm7NRkwrJPJXcL7wphJTOooVpJ5tMKDvGBCgAiKSCwa7WerJetaKF+1eEoeeFSlOoIi0xC+RM1MLa+MBUc81rg==
 
 "@effect-ts/core@^0.28.12":
   version "0.28.12"
