@@ -330,9 +330,9 @@
     minimist "^1.2.0"
 
 "@effect-ts/build-utils@^0.8.7":
-  version "0.8.7"
-  resolved "https://registry.yarnpkg.com/@effect-ts/build-utils/-/build-utils-0.8.7.tgz#185b61c8f89919e50dcf59ebbc1c723e70346634"
-  integrity sha512-gOXduE9onP0K5ay3z5wFCUbQIZI9cL0TpKPSXW3/ZJb8T15M0mkXSMeXlnOFrnIbgw2tSSINKAD+vjdwK7eHHQ==
+  version "0.8.8"
+  resolved "https://registry.yarnpkg.com/@effect-ts/build-utils/-/build-utils-0.8.8.tgz#c6e7debf918c03901752e93a939b25b3a6506d16"
+  integrity sha512-085EHsKxL6EOAfmcDokfJTwP8vOO3C3xHQVAF9lfCkaQfUWoLFAylovQwnwY9ETVPaHwiKEcIOtaQU+vN96Cyw==
 
 "@effect-ts/core@^0.28.12":
   version "0.28.12"
@@ -342,9 +342,9 @@
     "@effect-ts/system" "^0.25.12"
 
 "@effect-ts/system@^0.25.12":
-  version "0.25.12"
-  resolved "https://registry.yarnpkg.com/@effect-ts/system/-/system-0.25.12.tgz#9ec6b2dc56e9b1a485be511c49aa6c1a356a19d4"
-  integrity sha512-QngnwMTAyCsbu58hbi/6W0RLO9nwqoPLsEU4CAGnarwoahZolvUIgS2u3qqtuuszkaMVN8wfW606a1JEiA7Rmw==
+  version "0.25.13"
+  resolved "https://registry.yarnpkg.com/@effect-ts/system/-/system-0.25.13.tgz#a0fdd37795e9cfb7a9caf20d826581fd8cbcf7a4"
+  integrity sha512-HGWxVwkoJLyHn++/5Dx84xztOAoXHw/6qYKzPW7j9oqCHcBhGncwJD1aYOOCySn85SBLk7cUjsnFIqxnhQyDZQ==
 
 "@effect-ts/tracing-plugin@^0.8.4":
   version "0.8.4"
@@ -3245,9 +3245,9 @@ eslint-visitor-keys@^2.0.0:
   integrity sha512-QudtT6av5WXels9WjIM7qz1XD1cWGvX4gGXvp/zBn9nXG02D0utdU3Em2m/QjTnrsk6bBjmCygl3rmj118msQQ==
 
 eslint@^7.23.0:
-  version "7.23.0"
-  resolved "https://registry.yarnpkg.com/eslint/-/eslint-7.23.0.tgz#8d029d252f6e8cf45894b4bee08f5493f8e94325"
-  integrity sha512-kqvNVbdkjzpFy0XOszNwjkKzZ+6TcwCQ/h+ozlcIWwaimBBuhlQ4nN6kbiM2L+OjDcznkTJxzYfRFH92sx4a0Q==
+  version "7.24.0"
+  resolved "https://registry.yarnpkg.com/eslint/-/eslint-7.24.0.tgz#2e44fa62d93892bfdb100521f17345ba54b8513a"
+  integrity sha512-k9gaHeHiFmGCDQ2rEfvULlSLruz6tgfA8DEn+rY9/oYPFFTlz55mM/Q/Rij1b2Y42jwZiK3lXvNTw6w6TXzcKQ==
   dependencies:
     "@babel/code-frame" "7.12.11"
     "@eslint/eslintrc" "^0.4.0"
