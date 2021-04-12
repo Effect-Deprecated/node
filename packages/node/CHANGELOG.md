@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.19.1](https://github.com/Effect-TS/node/compare/@effect-ts/node@0.19.0...@effect-ts/node@0.19.1) (2021-04-12)
+
+
+### Bug Fixes
+
+* **streams:** fix chunk <-> buffer ([ebec1ed](https://github.com/Effect-TS/node/commit/ebec1edc40680d40f076badacc2f7970312af50f))
+
+
+
+
+
 # [0.19.0](https://github.com/Effect-TS/node/compare/@effect-ts/node@0.18.0...@effect-ts/node@0.19.0) (2021-04-12)
 
 **Note:** Version bump only for package @effect-ts/node
