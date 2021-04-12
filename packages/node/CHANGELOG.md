@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.19.2](https://github.com/Effect-TS/node/compare/@effect-ts/node@0.19.1...@effect-ts/node@0.19.2) (2021-04-12)
+
+
+### Bug Fixes
+
+* **streams:** fix chunks ([7337bee](https://github.com/Effect-TS/node/commit/7337bee108f4ab5a1c4396b51c62062ca85713eb))
+
+
+
+
+
 ## [0.19.1](https://github.com/Effect-TS/node/compare/@effect-ts/node@0.19.0...@effect-ts/node@0.19.1) (2021-04-12)
 
 
