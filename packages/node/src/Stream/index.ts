@@ -8,8 +8,7 @@ import { pipe, tuple } from "@effect-ts/core/Function"
 import * as O from "@effect-ts/core/Option"
 import type * as stream from "stream"
 
-import type { Byte } from "../Byte"
-import { buffer } from "../Byte"
+import * as Byte from "../Byte"
 
 export class ReadableError {
   readonly _tag = "ReadableError"
@@ -24,7 +23,7 @@ export class ReadableError {
  */
 export function streamFromReadable(
   r: () => stream.Readable
-): S.Stream<unknown, ReadableError, Byte> {
+): S.Stream<unknown, ReadableError, Byte.Byte> {
   return pipe(
     T.effectTotal(r),
     T.tap((sr) =>
@@ -40,9 +39,9 @@ export function streamFromReadable(
       })
     ),
     S.chain((sr) =>
-      S.effectAsync<unknown, ReadableError, Byte>((cb) => {
+      S.effectAsync<unknown, ReadableError, Byte.Byte>((cb) => {
         sr.on("data", (data) => {
-          cb(T.succeed(C.array(data)))
+          cb(T.succeed(Byte.chunk(data)))
         })
         sr.on("end", () => {
           cb(T.fail(O.none))
@@ -65,7 +64,7 @@ export class WritableError {
  */
 export function sinkFromWritable(
   w: () => stream.Writable
-): Sink.Sink<unknown, WritableError, Byte, never, void> {
+): Sink.Sink<unknown, WritableError, Byte.Byte, never, void> {
   return new Sink.Sink(
     pipe(
       T.effectTotal(w),
@@ -74,11 +73,11 @@ export function sinkFromWritable(
           sw.destroy()
         })
       ),
-      M.map((sw) => (o: O.Option<C.Chunk<Byte>>) =>
+      M.map((sw) => (o: O.Option<C.Chunk<Byte.Byte>>) =>
         O.isNone(o)
           ? Push.emit(undefined, C.empty())
           : T.effectAsync((cb) => {
-              sw.write(o.value, (err) => {
+              sw.write(Byte.buffer(o.value), (err) => {
                 if (err) {
                   cb(Push.fail(new WritableError(err), C.empty()))
                 } else {
@@ -101,8 +100,10 @@ export class TransformError {
  */
 export function transform(
   tr: () => stream.Transform
-): <R, E>(stream: S.Stream<R, E, Byte>) => S.Stream<R, E | TransformError, Byte> {
-  return <R, E>(stream: S.Stream<R, E, Byte>) => {
+): <R, E>(
+  stream: S.Stream<R, E, Byte.Byte>
+) => S.Stream<R, E | TransformError, Byte.Byte> {
+  return <R, E>(stream: S.Stream<R, E, Byte.Byte>) => {
     const managedSink = pipe(
       T.effectTotal(tr),
       M.makeExit((st) =>
@@ -113,7 +114,7 @@ export function transform(
       M.map((st) =>
         tuple(
           st,
-          Sink.fromPush<unknown, TransformError, Byte, never, void>(
+          Sink.fromPush<unknown, TransformError, Byte.Byte, never, void>(
             O.fold(
               () =>
                 T.chain_(
@@ -124,12 +125,10 @@ export function transform(
                 ),
               (chunk) =>
                 T.effectAsync((cb) => {
-                  st.write(
-                    Buffer.isBuffer(chunk) ? chunk : Buffer.of(...chunk),
-                    (err) =>
-                      err
-                        ? cb(Push.fail(new TransformError(err), C.empty()))
-                        : cb(Push.more)
+                  st.write(Byte.buffer(chunk), (err) =>
+                    err
+                      ? cb(Push.fail(new TransformError(err), C.empty()))
+                      : cb(Push.more)
                   )
                 })
             )
@@ -140,21 +139,22 @@ export function transform(
     return pipe(
       S.managed(managedSink),
       S.chain(([st, sink]) =>
-        S.effectAsyncM<unknown, TransformError, Byte, R, E | TransformError>((cb) =>
-          T.andThen_(
-            T.effectTotal(() => {
-              st.on("data", (chunk) => {
-                cb(T.succeed(C.array(chunk)))
-              })
-              st.on("error", (err) => {
-                cb(T.fail(O.some(new TransformError(err))))
-              })
-              st.on("end", () => {
-                cb(T.fail(O.none))
-              })
-            }),
-            S.run_(stream, sink)
-          )
+        S.effectAsyncM<unknown, TransformError, Byte.Byte, R, E | TransformError>(
+          (cb) =>
+            T.andThen_(
+              T.effectTotal(() => {
+                st.on("data", (chunk) => {
+                  cb(T.succeed(Byte.chunk(chunk)))
+                })
+                st.on("error", (err) => {
+                  cb(T.fail(O.some(new TransformError(err))))
+                })
+                st.on("end", () => {
+                  cb(T.fail(O.none))
+                })
+              }),
+              S.run_(stream, sink)
+            )
         )
       )
     )
@@ -164,16 +164,20 @@ export function transform(
 /**
  * A sink that collects all of its inputs into an array.
  */
-export function collectBuffer(): Sink.Sink<unknown, never, Byte, never, Buffer> {
+export function collectBuffer(): Sink.Sink<unknown, never, Byte.Byte, never, Buffer> {
   return Sink.map_(
-    Sink.reduceLeftChunks(C.empty<Byte>())((s, i: C.Chunk<Byte>) => C.concat_(s, i)),
-    buffer
+    Sink.reduceLeftChunks(C.empty<Byte.Byte>())((s, i: C.Chunk<Byte.Byte>) =>
+      C.concat_(s, i)
+    ),
+    Byte.buffer
   )
 }
 
 /**
  * Runs the stream and collects all of its elements to a buffer.
  */
-export function runBuffer<R, E>(self: S.Stream<R, E, Byte>): T.Effect<R, E, Buffer> {
+export function runBuffer<R, E>(
+  self: S.Stream<R, E, Byte.Byte>
+): T.Effect<R, E, Buffer> {
   return S.run_(self, collectBuffer())
 }
