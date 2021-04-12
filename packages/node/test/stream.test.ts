@@ -1,11 +1,11 @@
-import * as C from "@effect-ts/core/Chunk"
 import * as T from "@effect-ts/core/Effect"
 import * as S from "@effect-ts/core/Effect/Stream"
-import { flow, pipe } from "@effect-ts/core/Function"
+import { pipe } from "@effect-ts/core/Function"
 import * as fs from "fs"
 import * as path from "path"
 import * as zlib from "zlib"
 
+import * as Byte from "../src/Byte"
 import * as NS from "../src/Stream"
 
 describe("Node Stream", () => {
@@ -14,11 +14,11 @@ describe("Node Stream", () => {
       NS.streamFromReadable(() =>
         fs.createReadStream(path.join(__dirname, "fix/data.txt"))
       ),
-      S.runCollect,
+      NS.runBuffer,
       T.runPromise
     )
 
-    expect(C.asBuffer(res).toString("utf-8")).toEqual("a, b, c")
+    expect(res.toString("utf-8")).toEqual("a, b, c")
   })
   it("transform (gzip/gunzip)", async () => {
     const res = await pipe(
@@ -26,11 +26,13 @@ describe("Node Stream", () => {
         fs.createReadStream(path.join(__dirname, "fix/data.txt"))
       ),
       NS.transform(zlib.createGzip),
-      S.runCollect,
-      T.chain(flow(S.fromChunk, NS.transform(zlib.createGunzip), S.runCollect)),
+      NS.runBuffer,
+      T.chain((x) =>
+        pipe(Byte.chunk(x), S.fromChunk, NS.transform(zlib.createGunzip), NS.runBuffer)
+      ),
       T.runPromise
     )
 
-    expect(C.asBuffer(res).toString("utf-8")).toEqual("a, b, c")
+    expect(res.toString("utf-8")).toEqual("a, b, c")
   })
 })
