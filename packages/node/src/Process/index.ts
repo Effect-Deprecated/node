@@ -16,7 +16,7 @@ export class StdinError {
  * Creates a stream that reads from the standard input
  */
 export const stdin: S.IO<StdinError, Byte> = pipe(
-  T.effectTotal(() => tuple(P.stdin.resume(), new Array<Function>())),
+  T.succeedWith(() => tuple(P.stdin.resume(), new Array<Function>())),
   S.fromEffect,
   S.chain(([rs, cleanup]) =>
     pipe(
@@ -42,7 +42,7 @@ export const stdin: S.IO<StdinError, Byte> = pipe(
         rs.on("error", onError)
       }),
       S.ensuring(
-        T.effectTotal(() => {
+        T.succeedWith(() => {
           cleanup.forEach((h) => {
             h()
           })

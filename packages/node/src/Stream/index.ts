@@ -25,7 +25,7 @@ export function streamFromReadable(
   r: () => stream.Readable
 ): S.Stream<unknown, ReadableError, Byte.Byte> {
   return pipe(
-    T.effectTotal(r),
+    T.succeedWith(r),
     T.tap((sr) =>
       sr.readableEncoding != null
         ? T.dieMessage(
@@ -34,7 +34,7 @@ export function streamFromReadable(
         : T.unit
     ),
     S.bracket((sr) =>
-      T.effectTotal(() => {
+      T.succeedWith(() => {
         sr.destroy()
       })
     ),
@@ -67,9 +67,9 @@ export function sinkFromWritable(
 ): Sink.Sink<unknown, WritableError, Byte.Byte, never, void> {
   return new Sink.Sink(
     pipe(
-      T.effectTotal(w),
+      T.succeedWith(w),
       M.makeExit((sw) =>
-        T.effectTotal(() => {
+        T.succeedWith(() => {
           sw.destroy()
         })
       ),
@@ -105,9 +105,9 @@ export function transform(
 ) => S.Stream<R, E | TransformError, Byte.Byte> {
   return <R, E>(stream: S.Stream<R, E, Byte.Byte>) => {
     const managedSink = pipe(
-      T.effectTotal(tr),
+      T.succeedWith(tr),
       M.makeExit((st) =>
-        T.effectTotal(() => {
+        T.succeedWith(() => {
           st.destroy()
         })
       ),
@@ -118,7 +118,7 @@ export function transform(
             O.fold(
               () =>
                 T.chain_(
-                  T.effectTotal(() => {
+                  T.succeedWith(() => {
                     st.end()
                   }),
                   () => Push.emit(undefined, C.empty())
@@ -141,8 +141,8 @@ export function transform(
       S.chain(([st, sink]) =>
         S.effectAsyncM<unknown, TransformError, Byte.Byte, R, E | TransformError>(
           (cb) =>
-            T.andThen_(
-              T.effectTotal(() => {
+            T.zipRight_(
+              T.succeedWith(() => {
                 st.on("data", (chunk) => {
                   cb(T.succeed(Byte.chunk(chunk)))
                 })
