@@ -11,7 +11,7 @@ export function byte(n: number): Byte {
 }
 
 export function chunk(buf: Buffer): Chunk.Chunk<Byte> {
-  return Chunk.array(buf) as any
+  return Chunk.from(buf) as any
 }
 
 export function buffer(buf: Chunk.Chunk<Byte>): Buffer {
