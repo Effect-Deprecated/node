@@ -30,9 +30,10 @@ export function defaultTeardown(
   })
 }
 
-export const defaultHook = (
-  cont: NodeJS.SignalsListener
-): ((signal: NodeJS.Signals) => void) => (signal) => cont(signal)
+export const defaultHook =
+  (cont: NodeJS.SignalsListener): ((signal: NodeJS.Signals) => void) =>
+  (signal) =>
+    cont(signal)
 
 export const nodeTracer = (trace: Fiber.Trace) =>
   prettyTraceNode(trace, (path) =>

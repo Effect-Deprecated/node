@@ -73,18 +73,19 @@ export function sinkFromWritable(
           sw.destroy()
         })
       ),
-      M.map((sw) => (o: O.Option<C.Chunk<Byte.Byte>>) =>
-        O.isNone(o)
-          ? Push.emit(undefined, C.empty())
-          : T.effectAsync((cb) => {
-              sw.write(Byte.buffer(o.value), (err) => {
-                if (err) {
-                  cb(Push.fail(new WritableError(err), C.empty()))
-                } else {
-                  cb(Push.more)
-                }
+      M.map(
+        (sw) => (o: O.Option<C.Chunk<Byte.Byte>>) =>
+          O.isNone(o)
+            ? Push.emit(undefined, C.empty())
+            : T.effectAsync((cb) => {
+                sw.write(Byte.buffer(o.value), (err) => {
+                  if (err) {
+                    cb(Push.fail(new WritableError(err), C.empty()))
+                  } else {
+                    cb(Push.more)
+                  }
+                })
               })
-            })
       )
     )
   )
