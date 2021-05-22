@@ -24,7 +24,7 @@
   },
   "sideEffects": false,
   "peerDependencies": {
-    "@effect-ts/core": "^0.38.1"
+    "@effect-ts/core": "^0.39.3"
   },
   "config": {
     "modules": [
