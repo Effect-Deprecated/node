@@ -1,3 +1,7 @@
+/**
+ * ets_tracing: off
+ */
+
 import * as C from "@effect-ts/core/Collections/Immutable/Chunk"
 import * as T from "@effect-ts/core/Effect"
 import * as M from "@effect-ts/core/Effect/Managed"

@@ -1,3 +1,7 @@
+/**
+ * ets_tracing: off
+ */
+
 import * as T from "@effect-ts/core/Effect"
 import * as S from "@effect-ts/core/Effect/Stream"
 import { pipe, tuple } from "@effect-ts/core/Function"
