@@ -382,9 +382,9 @@
     "@cspotcode/source-map-consumer" "0.8.0"
 
 "@effect-ts/build-utils@^0.23.0":
-  version "0.23.2"
-  resolved "https://registry.yarnpkg.com/@effect-ts/build-utils/-/build-utils-0.23.2.tgz#32fe7dfae1f75eda3ed921a94b69a19ca601bf02"
-  integrity sha512-VDah7MQIu9LjTQXw22ku50nykzYxy8HU4FTIg5s+E7Z5Lds7NWwoAwGXs6mR020BHZfzt+ePyMDkWw8Ganpjvw==
+  version "0.23.7"
+  resolved "https://registry.yarnpkg.com/@effect-ts/build-utils/-/build-utils-0.23.7.tgz#d65d9f6bfd8e4d773a77a9a03cba43fb0e9d57ec"
+  integrity sha512-Er05OvCRIIfKVhiPpBowV32cCZBIASUpLhqIEWwZNo7+Z/zNQQVAp9L9fCimVEt17EKS5o2E79hgbgjOG3tzPg==
 
 "@effect-ts/core@^0.43.0":
   version "0.43.1"
@@ -394,14 +394,14 @@
     "@effect-ts/system" "^0.40.1"
 
 "@effect-ts/system@^0.40.0", "@effect-ts/system@^0.40.1":
-  version "0.40.1"
-  resolved "https://registry.yarnpkg.com/@effect-ts/system/-/system-0.40.1.tgz#6c991720dee32c5c05d961709f92f4375c9ec042"
-  integrity sha512-4UDvCLIjYaFQ1V0cHx5CbT3f7u332oVE9CQNQzLoAHy6yBHLSDKn2r18MnADtdJ3iPmACseVapOZtooze+3DUA==
+  version "0.40.6"
+  resolved "https://registry.yarnpkg.com/@effect-ts/system/-/system-0.40.6.tgz#d1ec99f2db6b728d161f4ff193ed1f1abce83bc6"
+  integrity sha512-7eLeudJvvjxybryau62vkgqcYEfLmQ5z45d1oIpg5f2H9DxNI0IjeP4SBN2DkLol6Khf80ncamefsIDHEFdxlQ==
 
 "@effect-ts/tracing-plugin@^0.14.0":
-  version "0.14.1"
-  resolved "https://registry.yarnpkg.com/@effect-ts/tracing-plugin/-/tracing-plugin-0.14.1.tgz#d98aab7fff70901a96023c2abedff773e99af37d"
-  integrity sha512-apRW3fui/x4zysuKv7i5OvYcKQpIsvtboTBwN6yD7I5+vXyiH7jRv/KtztCL8iC16J+Pq3eTv2+HKJdyPTENZw==
+  version "0.14.5"
+  resolved "https://registry.yarnpkg.com/@effect-ts/tracing-plugin/-/tracing-plugin-0.14.5.tgz#72df6d6a2ecfde0b83e615413cbd8f0a76fb0af4"
+  integrity sha512-hC7A9YWJ3ZBxtlZsoyGwMdQ/4QE28m4pDxzBfV/lVBeoLtlkpWKltGPVf9iUTkzlZiWZQFIJ042SX0MCCJ8dfw==
 
 "@eslint/eslintrc@^0.4.3":
   version "0.4.3"
@@ -1647,9 +1647,9 @@
   integrity sha512-jhuKLIRrhvCPLqwPcx6INqmKeiA5EWrsCOPhrlFSrbrmU4ZMPjj5Ul/oLCMDO98XRUIwVm78xICz4EPCektzeQ==
 
 "@types/node@*", "@types/node@^16.4.6":
-  version "16.7.6"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-16.7.6.tgz#8666478db8095aa66e25b7e469f3e7b53ea2855e"
-  integrity sha512-VESVNFoa/ahYA62xnLBjo5ur6gPsgEE5cNRy8SrdnkZ2nwJSW0kJ4ufbFr2zuU9ALtHM8juY53VcRoTA7htXSg==
+  version "16.7.8"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-16.7.8.tgz#2448be5f24fe6b77114632b6350fcd219334651e"
+  integrity sha512-8upnoQU0OPzbIkm+ZMM0zCeFCkw2s3mS0IWdx0+AAaWqm4fkBb0UJp8Edl7FVKRamYbpJC/aVsHpKWBIbiC7Zg==
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.1"
