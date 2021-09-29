@@ -394,9 +394,9 @@
     "@effect-ts/system" "^0.41.0"
 
 "@effect-ts/system@^0.41.0":
-  version "0.41.0"
-  resolved "https://registry.yarnpkg.com/@effect-ts/system/-/system-0.41.0.tgz#daa1bab4f3cb98ac15a929724af1785adcf4f6e3"
-  integrity sha512-ko4gdtT5Iw3FQUjghvIKvIh8Gssko1bs9r3SknykPz30GgoyKn1WrgD8VYYXcOSwcNehYGM7ySOGvaJTieUPNw==
+  version "0.41.8"
+  resolved "https://registry.yarnpkg.com/@effect-ts/system/-/system-0.41.8.tgz#b47e994771e4f6fa8a6e3766386437012511fe64"
+  integrity sha512-JoNdsn8J1XrGlCxURMN9mNoYvMvvMqERDsivqwBn1saaqiB6AqP1Azg5FdlcIX6YzOeZHtgZuoEFnqD2dm8Jlg==
 
 "@effect-ts/tracing-plugin@^0.14.8":
   version "0.14.8"
