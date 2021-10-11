@@ -22,7 +22,7 @@
     "directory": "dist"
   },
   "peerDependencies": {
-    "@effect-ts/core": "^0.44.11"
+    "@effect-ts/core": "^0.45.0"
   },
   "config": {
     "side": [],
