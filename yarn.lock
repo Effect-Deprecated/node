@@ -387,13 +387,13 @@
   integrity sha512-eGzjl4wrZLrDbkVCoY9+N1OirVQSttmWLGdLy5dqL08Th9lAza1EMgIi8sklmk1HnKZATbXF9Hzd6P9jBVUczw==
 
 "@effect-ts/core@^0.45.0":
-  version "0.45.0"
-  resolved "https://registry.yarnpkg.com/@effect-ts/core/-/core-0.45.0.tgz#c6363530fdeace6851e5b5cba8f71d6ae268e115"
-  integrity sha512-jP1X8/pwA64aul1V1jOV7WtTW69sZFvuVuTRCe0/zXVsIxdJRMdetFGHKJzDhlUMLcWvGd+zDMJMJeeSIQL5xQ==
+  version "0.45.4"
+  resolved "https://registry.yarnpkg.com/@effect-ts/core/-/core-0.45.4.tgz#d01d91bee410aa5d82388efa5eaeeca30bf521b3"
+  integrity sha512-Eu0vgwss7QLsERrrVGtxZ0+5w/naaS6BVxX4GbijYpXcDUWJW3zZc1pyzbb0P0R2WfzwX+F3MfA1r+67tIz1tw==
   dependencies:
-    "@effect-ts/system" "^0.42.0"
+    "@effect-ts/system" "^0.42.4"
 
-"@effect-ts/system@^0.42.0":
+"@effect-ts/system@^0.42.0", "@effect-ts/system@^0.42.4":
   version "0.42.4"
   resolved "https://registry.yarnpkg.com/@effect-ts/system/-/system-0.42.4.tgz#a3129100d98a7978f533d47ea163d6113391dade"
   integrity sha512-ZkQcswKQ4VKznTF4RjBo1T3W3mcSzIuPRzK6w1F92a2PoSeb6YKpF45uPiGUrO3JTc8GKm2YpZvyIWalTv1Sig==
