@@ -1,4 +1,4 @@
-## Welcome to Effect-TS - Node
+## Welcome to Effect-TS - Node [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-ready--to--code-908a85?logo=gitpod)](https://gitpod.io/#https://github.com/Effect-TS/node)
 
 Please follow up to: [https://github.com/Effect-TS/node/tree/master/packages/node](https://github.com/Effect-TS/node/tree/master/packages/node)
 
