@@ -5,7 +5,7 @@
   "repository": "https://github.com/Effect-TS/node.git",
   "homepage": "https://www.matechs.com",
   "scripts": {
-    "clean": "rimraf build tsbuildinfo dist",
+    "clean": "yarn ets:rimraf build tsbuildinfo dist",
     "build-cjs": "yarn ets:tsc -p tsconfig.build.cjs.json",
     "build-esm": "yarn ets:tsc -p tsconfig.build.esm.json",
     "build-post": "yarn ets:build-utils pack",

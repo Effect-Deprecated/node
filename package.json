@@ -23,11 +23,13 @@
     "version:patch": "lerna version patch --conventional-commits",
     "version:graduate": "lerna version --conventional-commits --conventional-graduate",
     "commit": "cz",
+    "ets:rimraf": "cd $INIT_CWD && rimraf",
     "ets:tsc": "cd $INIT_CWD && tsc",
     "ets:eslint": "cd $INIT_CWD && eslint",
     "ets:prettier": "cd $INIT_CWD && prettier",
     "ets:concurrently": "cd $INIT_CWD && concurrently",
-    "ets:build-utils": "cd $INIT_CWD && build-utils"
+    "ets:build-utils": "cd $INIT_CWD && build-utils",
+    "ets:madge": "cd $INIT_CWD && madge"
   },
   "config": {
     "commitizen": {
