@@ -41,7 +41,7 @@
     "@babel/core": "^7.16.0",
     "@effect-ts/build-utils": "^0.26.1",
     "@effect-ts/core": "^0.46.1",
-    "@effect-ts/system": "^0.43.1",
+    "@effect-ts/system": "^0.45.2",
     "@effect-ts/tracing-plugin": "^0.14.18",
     "@types/cpx": "^1.5.2",
     "@types/glob": "^7.1.4",
