@@ -2,7 +2,7 @@
  * ets_tracing: off
  */
 
-import * as C from "@effect-ts/core/Collections/Immutable/Chunk"
+import type * as C from "@effect-ts/core/Collections/Immutable/Chunk"
 import * as T from "@effect-ts/core/Effect"
 import * as S from "@effect-ts/core/Effect/Experimental/Stream"
 import * as Sink from "@effect-ts/core/Effect/Experimental/Stream/Sink"
@@ -116,12 +116,7 @@ export function collectBuffer<E>(): Sink.Sink<
   unknown,
   Buffer
 > {
-  return Sink.map_(
-    Sink.foldLeftChunks(C.empty<Byte.Byte>(), (s, i: C.Chunk<Byte.Byte>) =>
-      C.concat_(s, i)
-    ),
-    Byte.buffer
-  )
+  return Sink.map_(Sink.collectAll<E, Byte.Byte>(), Byte.buffer)
 }
 
 /**
