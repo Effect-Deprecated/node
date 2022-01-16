@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.35.1](https://github.com/Effect-TS/node/compare/@effect-ts/node@0.35.0...@effect-ts/node@0.35.1) (2022-01-16)
+
+**Note:** Version bump only for package @effect-ts/node
+
+
+
+
+
 # [0.35.0](https://github.com/Effect-TS/node/compare/@effect-ts/node@0.34.0...@effect-ts/node@0.35.0) (2022-01-16)
 
 **Note:** Version bump only for package @effect-ts/node
