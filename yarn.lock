@@ -514,7 +514,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@effect-ts/node@workspace:packages/node"
   peerDependencies:
-    "@effect-ts/core": ^0.52.0
+    "@effect-ts/core": ^0.53.0
   languageName: unknown
   linkType: soft
 
