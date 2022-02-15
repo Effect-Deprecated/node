@@ -1,6 +1,4 @@
-/**
- * ets_tracing: off
- */
+// ets_tracing: off
 
 import * as T from "@effect-ts/core/Effect"
 import * as S from "@effect-ts/core/Effect/Stream"
@@ -8,8 +6,8 @@ import { pipe, tuple } from "@effect-ts/core/Function"
 import * as O from "@effect-ts/core/Option"
 import * as P from "process"
 
-import type { Byte } from "../Byte"
-import { chunk } from "../Byte"
+import type { Byte } from "../Byte/index.js"
+import { chunk } from "../Byte/index.js"
 
 export class StdinError {
   readonly _tag = "StdinError"

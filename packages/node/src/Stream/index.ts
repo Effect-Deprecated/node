@@ -1,6 +1,4 @@
-/**
- * ets_tracing: off
- */
+// ets_tracing: off
 
 import * as C from "@effect-ts/core/Collections/Immutable/Chunk"
 import * as T from "@effect-ts/core/Effect"
@@ -12,7 +10,7 @@ import { pipe, tuple } from "@effect-ts/core/Function"
 import * as O from "@effect-ts/core/Option"
 import type * as stream from "stream"
 
-import * as Byte from "../Byte"
+import * as Byte from "../Byte/index.js"
 
 export class ReadableError {
   readonly _tag = "ReadableError"
