@@ -1,3 +1,5 @@
+// ets_tracing: off
+
 import { Tagged } from "@effect-ts/core/Case"
 import * as T from "@effect-ts/core/Effect"
 import * as L from "@effect-ts/core/Effect/Layer"
