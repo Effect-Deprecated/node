@@ -512,16 +512,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@effect-ts/build-utils@npm:^0.37.3":
-  version: 0.37.3
-  resolution: "@effect-ts/build-utils@npm:0.37.3"
+"@effect-ts/build-utils@npm:^0.37.5":
+  version: 0.37.5
+  resolution: "@effect-ts/build-utils@npm:0.37.5"
   peerDependencies:
     "@effect-ts/core": ">= 0.28.9"
     chalk: ">= 4.1.0"
     cpx: ">= 1.5.0"
   bin:
     build-utils: build-utils
-  checksum: cef8a3bab52321ecc427aecf183f1b519a7151398cbca001d0bb87ecb733f7c61bfdfb64f9e4227142e1c39547b42d82c3ffd2fb306e2b11ae5054fe0b5fa4da
+  checksum: 9308b99c48d5facd8dd64f019254b761afaeccaa862d51a1e7bc2272f0a6d4fbbfcb9572732c364e220dfe7f7c1b318cf10344fc508db4b3ab20810491c2cab7
   languageName: node
   linkType: hard
 
@@ -538,7 +538,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@effect-ts/node@workspace:packages/node"
   peerDependencies:
-    "@effect-ts/core": ^0.57.2
+    "@effect-ts/core": ^0.57.4
   languageName: unknown
   linkType: soft
 
@@ -549,10 +549,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@effect-ts/tracing-plugin@npm:^0.18.3":
-  version: 0.18.3
-  resolution: "@effect-ts/tracing-plugin@npm:0.18.3"
-  checksum: de9944af482bc97bd35fb462fe655b7f323c24259c87a52bffa929e4450ffd6707614ff3542edb0cf4bdffdb1ccbdc3bea20086d154bd8a19f54d6c56a2abe5e
+"@effect-ts/tracing-plugin@npm:^0.18.5":
+  version: 0.18.5
+  resolution: "@effect-ts/tracing-plugin@npm:0.18.5"
+  checksum: 855caae518985a939d05d1cbd90c4999b8e984036f4ca01f2a0822ab1b1f0c8f6852e6fa3322900ae7c3d3fe066359cacd40e23b7cd180e9d4a83b9b65d90cd9
   languageName: node
   linkType: hard
 
@@ -4336,10 +4336,10 @@ __metadata:
     "@babel/cli": ^7.17.6
     "@babel/core": ^7.17.5
     "@babel/plugin-transform-modules-commonjs": ^7.16.8
-    "@effect-ts/build-utils": ^0.37.3
+    "@effect-ts/build-utils": ^0.37.5
     "@effect-ts/core": ^0.57.4
     "@effect-ts/system": ^0.54.4
-    "@effect-ts/tracing-plugin": ^0.18.3
+    "@effect-ts/tracing-plugin": ^0.18.5
     "@types/cpx": ^1.5.2
     "@types/glob": ^7.2.0
     "@types/jest": ^27.4.1
