@@ -7,8 +7,9 @@
     "moduleResolution": "Node",
     "incremental": true,
     "tsBuildInfoFile": "tsbuildinfo/esm.tsbuildinfo",
-    "declaration": false,
-    "declarationMap": false,
+    "declarationDir": "build/dts",
+    "declaration": true,
+    "declarationMap": true,
     "removeComments": false,
     "plugins": [
       {
@@ -19,5 +20,7 @@
       }
     ]
   },
-  "include": ["src/**/*.ts"]
+  "include": [
+    "src/**/*.ts"
+  ]
 }

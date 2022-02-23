@@ -5,8 +5,8 @@ import * as fs from "fs"
 import * as path from "path"
 import * as zlib from "zlib"
 
-import * as Byte from "../src/Byte"
-import * as NS from "../src/Stream"
+import * as Byte from "../src/Byte/index.js"
+import * as NS from "../src/Stream/index.js"
 
 describe("Node Stream", () => {
   it("build from readable", async () => {

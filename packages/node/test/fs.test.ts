@@ -2,7 +2,7 @@ import * as T from "@effect-ts/core/Effect"
 import { pipe } from "@effect-ts/core/Function"
 import * as path from "path"
 
-import * as FS from "../src/FileSystem"
+import * as FS from "../src/FileSystem/index.js"
 
 describe("FS", () => {
   it("test file system access to files", () =>
