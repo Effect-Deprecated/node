@@ -44,12 +44,11 @@ export class RmError extends FSError("RmError")<{
   readonly options: fs.RmOptions | undefined
 }> {}
 
-export class RmDirError extends FSError('RmDirError')<{
+export class RmDirError extends FSError("RmDirError")<{
   readonly error: NodeJS.ErrnoException
   readonly path: fs.PathLike
   readonly options: fs.RmDirOptions | undefined
 }> {}
-
 
 export class FileExistsError extends FSError("FileExistsError")<{
   readonly error: AccessError
@@ -116,8 +115,8 @@ export const makeLiveFS = T.succeedWith(() => {
     })
 
   const rmDir = (path: fs.PathLike, options?: fs.RmDirOptions) =>
-    T.effectAsync<unknown, RmDirError, void>(resume => {
-      fs.rmdir(path, options ?? {}, error => {
+    T.effectAsync<unknown, RmDirError, void>((resume) => {
+      fs.rmdir(path, options ?? {}, (error) => {
         if (error) {
           resume(T.fail(new RmDirError({ error, path, options })))
         } else {
@@ -173,10 +172,11 @@ export interface FS extends _A<typeof makeLiveFS> {}
 
 export const FS = tag<FS>(FSSymbol)
 
-export const { access, fileExists, readFile, rm, rmDir, stat, writeFile } = T.deriveLifted(FS)(
-  ["writeFile", "readFile", "stat", "access", "fileExists", "rm", "rmDir"],
-  [],
-  []
-)
+export const { access, fileExists, readFile, rm, rmDir, stat, writeFile } =
+  T.deriveLifted(FS)(
+    ["writeFile", "readFile", "stat", "access", "fileExists", "rm", "rmDir"],
+    [],
+    []
+  )
 
 export const LiveFS = L.fromEffect(FS)(makeLiveFS)
