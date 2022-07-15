@@ -524,16 +524,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@effect-ts/node@workspace:packages/node":
-  version: 0.0.0-use.local
-  resolution: "@effect-ts/node@workspace:packages/node"
-  dependencies:
-    "@effect/core": ^0.0.7
-    "@tsplus/runtime": ^0.1.3
-    "@tsplus/stdlib": ^0.2.2
-  languageName: unknown
-  linkType: soft
-
 "@effect-ts/system@npm:^0.57.0":
   version: 0.57.0
   resolution: "@effect-ts/system@npm:0.57.0"
@@ -556,6 +546,16 @@ __metadata:
   checksum: 8ee4e3c032a79d67f0010795a8316204ad541b50f135e56ba86c2812207ec15453f86c83582c95594e766dcff185d2ffb2ee617f5ed906eee39bbe25e6a40b65
   languageName: node
   linkType: hard
+
+"@effect/node@workspace:packages/node":
+  version: 0.0.0-use.local
+  resolution: "@effect/node@workspace:packages/node"
+  dependencies:
+    "@effect/core": ^0.0.7
+    "@tsplus/runtime": ^0.1.3
+    "@tsplus/stdlib": ^0.2.2
+  languageName: unknown
+  linkType: soft
 
 "@eslint/eslintrc@npm:^1.2.1":
   version: 1.2.1
