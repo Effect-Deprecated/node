@@ -1,9 +1,8 @@
 // ets_tracing: off
 
-import type * as B from "@effect-ts/core/Branded"
-import * as Chunk from "@effect-ts/core/Collections/Immutable/Chunk"
+import type { Brand } from "@tsplus/runtime/Brand"
 
-export type Byte = B.Branded<number, "Byte">
+export type Byte = number & Brand<"Byte">
 
 /**
  * @ets_optimize identity
@@ -12,10 +11,10 @@ export function byte(n: number): Byte {
   return n as any
 }
 
-export function chunk(buf: Buffer): Chunk.Chunk<Byte> {
+export function chunk(buf: Buffer): Chunk<Byte> {
   return Chunk.from(buf) as any
 }
 
-export function buffer(buf: Chunk.Chunk<Byte>): Buffer {
-  return Chunk.toArrayLike(buf) as any
+export function buffer(buf: Chunk<Byte>): Buffer {
+  return buf.toArrayLike as any
 }

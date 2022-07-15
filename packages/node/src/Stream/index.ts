@@ -1,13 +1,5 @@
 // ets_tracing: off
 
-import * as C from "@effect-ts/core/Collections/Immutable/Chunk"
-import * as T from "@effect-ts/core/Effect"
-import * as M from "@effect-ts/core/Effect/Managed"
-import * as S from "@effect-ts/core/Effect/Stream"
-import * as Push from "@effect-ts/core/Effect/Stream/Push"
-import * as Sink from "@effect-ts/core/Effect/Stream/Sink"
-import { pipe, tuple } from "@effect-ts/core/Function"
-import * as O from "@effect-ts/core/Option"
 import type * as stream from "stream"
 
 import * as Byte from "../Byte/index.js"
@@ -25,31 +17,30 @@ export class ReadableError {
  */
 export function streamFromReadable(
   r: () => stream.Readable
-): S.Stream<unknown, ReadableError, Byte.Byte> {
+): Stream<never, ReadableError, Byte.Byte> {
   return pipe(
-    T.succeedWith(r),
-    T.tap((sr) =>
+    Effect.succeedWith(r).tap((sr) =>
       sr.readableEncoding != null
-        ? T.dieMessage(
+        ? Effect.dieMessage(
             `stream.Readable encoding set to ${sr.readableEncoding} cannot be used to produce Buffer`
           )
-        : T.unit
+        : Effect.unit
     ),
-    S.bracket((sr) =>
-      T.succeedWith(() => {
+    Stream.bracket((sr) =>
+      Effect.succeedWith(() => {
         sr.destroy()
       })
     ),
-    S.chain((sr) =>
-      S.effectAsync<unknown, ReadableError, Byte.Byte>((cb) => {
+    Stream.$.flatMap((sr) =>
+      Stream.async<never, ReadableError, Byte.Byte>((cb) => {
         sr.on("data", (data) => {
-          cb(T.succeed(Byte.chunk(data)))
+          cb(Effect.succeed(Byte.chunk(data)))
         })
         sr.on("end", () => {
-          cb(T.fail(O.none))
+          cb(Effect.fail(Maybe.none))
         })
         sr.on("error", (err) => {
-          cb(T.fail(O.some(new ReadableError(err))))
+          cb(Effect.fail(Maybe.some(new ReadableError(err))))
         })
       })
     )
@@ -66,23 +57,23 @@ export class WritableError {
  */
 export function sinkFromWritable(
   w: () => stream.Writable
-): Sink.Sink<unknown, WritableError, Byte.Byte, never, void> {
-  return new Sink.Sink(
+): Sink<never, WritableError, Byte.Byte, never, void> {
+  return new Sink(
     pipe(
-      T.succeedWith(w),
+      Effect.succeedWith(w),
       M.makeExit((sw) =>
-        T.succeedWith(() => {
+        Effect.succeedWith(() => {
           sw.destroy()
         })
       ),
       M.map(
-        (sw) => (o: O.Option<C.Chunk<Byte.Byte>>) =>
-          O.isNone(o)
-            ? Push.emit(undefined, C.empty())
-            : T.effectAsync((cb) => {
+        (sw) => (o: Maybe<Chunk<Byte.Byte>>) =>
+          Maybe.isNone(o)
+            ? Push.emit(undefined, Chunk.empty())
+            : Effect.async((cb) => {
                 sw.write(Byte.buffer(o.value), (err) => {
                   if (err) {
-                    cb(Push.fail(new WritableError(err), C.empty()))
+                    cb(Push.fail(new WritableError(err), Chunk.empty()))
                   } else {
                     cb(Push.more)
                   }
@@ -103,34 +94,29 @@ export class TransformError {
  */
 export function transform(
   tr: () => stream.Transform
-): <R, E>(
-  stream: S.Stream<R, E, Byte.Byte>
-) => S.Stream<R, E | TransformError, Byte.Byte> {
-  return <R, E>(stream: S.Stream<R, E, Byte.Byte>) => {
+): <R, E>(stream: Stream<R, E, Byte.Byte>) => Stream<R, E | TransformError, Byte.Byte> {
+  return <R, E>(stream: Stream<R, E, Byte.Byte>) => {
     const managedSink = pipe(
-      T.succeedWith(tr),
+      Effect.succeedWith(tr),
       M.makeExit((st) =>
-        T.succeedWith(() => {
+        Effect.succeedWith(() => {
           st.destroy()
         })
       ),
       M.map((st) =>
-        tuple(
+        Tuple(
           st,
-          Sink.fromPush<unknown, TransformError, Byte.Byte, never, void>(
-            O.fold(
+          Sink.fromPush<never, TransformError, Byte.Byte, never, void>((_) =>
+            _.fold(
               () =>
-                T.chain_(
-                  T.succeedWith(() => {
-                    st.end()
-                  }),
-                  () => Push.emit(undefined, C.empty())
-                ),
+                Effect.succeedWith(() => {
+                  st.end()
+                }).flatMap(() => Push.emit(undefined, Chunk.empty())),
               (chunk) =>
-                T.effectAsync((cb) => {
+                Effect.effectAsync((cb) => {
                   st.write(Byte.buffer(chunk), (err) =>
                     err
-                      ? cb(Push.fail(new TransformError(err), C.empty()))
+                      ? cb(Push.fail(new TransformError(err), Chunk.empty()))
                       : cb(Push.more)
                   )
                 })
@@ -139,26 +125,20 @@ export function transform(
         )
       )
     )
-    return pipe(
-      S.managed(managedSink),
-      S.chain(([st, sink]) =>
-        S.effectAsyncM<unknown, TransformError, Byte.Byte, R, E | TransformError>(
-          (cb) =>
-            T.zipRight_(
-              T.succeedWith(() => {
-                st.on("data", (chunk) => {
-                  cb(T.succeed(Byte.chunk(chunk)))
-                })
-                st.on("error", (err) => {
-                  cb(T.fail(O.some(new TransformError(err))))
-                })
-                st.on("end", () => {
-                  cb(T.fail(O.none))
-                })
-              }),
-              S.run_(stream, sink)
-            )
-        )
+    return Stream.managed(managedSink).flatMap(({ tuple: [st, sink] }) =>
+      Stream.asyncEffect<never, TransformError, Byte.Byte, R, E | TransformError>(
+        (cb) =>
+          Effect.succeedWith(() => {
+            st.on("data", (chunk) => {
+              cb(Effect.succeed(Byte.chunk(chunk)))
+            })
+            st.on("error", (err) => {
+              cb(Effect.fail(Maybe.some(new TransformError(err))))
+            })
+            st.on("end", () => {
+              cb(Effect.fail(Maybe.none))
+            })
+          }).zipRight(Stream.run_(stream, sink))
       )
     )
   }
@@ -167,20 +147,15 @@ export function transform(
 /**
  * A sink that collects all of its inputs into an array.
  */
-export function collectBuffer(): Sink.Sink<unknown, never, Byte.Byte, never, Buffer> {
-  return Sink.map_(
-    Sink.reduceLeftChunks(C.empty<Byte.Byte>())((s, i: C.Chunk<Byte.Byte>) =>
-      C.concat_(s, i)
-    ),
-    Byte.buffer
-  )
+export function collectBuffer(): Sink<never, never, Byte.Byte, never, Buffer> {
+  return Sink.reduceLeftChunks(Chunk.empty<Byte.Byte>())((s, i: Chunk<Byte.Byte>) =>
+    s.concat(i)
+  ).map(Byte.buffer)
 }
 
 /**
  * Runs the stream and collects all of its elements to a buffer.
  */
-export function runBuffer<R, E>(
-  self: S.Stream<R, E, Byte.Byte>
-): T.Effect<R, E, Buffer> {
-  return S.run_(self, collectBuffer())
+export function runBuffer<R, E>(self: Stream<R, E, Byte.Byte>): Effect<R, E, Buffer> {
+  return Stream.run_(self, collectBuffer())
 }

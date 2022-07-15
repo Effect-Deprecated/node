@@ -11,6 +11,7 @@
     "declaration": true,
     "declarationMap": true,
     "removeComments": false,
+    "tsPlusConfig": "../../tsplus.config.json",
     "plugins": [
       {
         "transform": "@effect-ts/tracing-plugin",

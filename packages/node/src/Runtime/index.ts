@@ -1,15 +1,8 @@
 // ets_tracing: off
 
-import * as L from "@effect-ts/core/Collections/Immutable/List"
-import type { CustomRuntime } from "@effect-ts/core/Effect"
-import * as T from "@effect-ts/core/Effect"
-import { defaultRuntime } from "@effect-ts/core/Effect"
-import { interruptAllAs } from "@effect-ts/core/Effect/Fiber"
-import * as S from "@effect-ts/core/Sync"
-import * as Cause from "@effect-ts/system/Cause"
-import * as Fiber from "@effect-ts/system/Fiber"
-import * as Supervisor from "@effect-ts/system/Supervisor"
-import { AtomicBoolean } from "@effect-ts/system/Support/AtomicBoolean"
+import * as L from "@effect/core/Collections/Immutable/List"
+import { defaultRuntime } from "@effect/core/io/Effect"
+import * as S from "@effect/core/Sync"
 import * as path from "path"
 
 export function defaultTeardown(
@@ -17,7 +10,7 @@ export function defaultTeardown(
   id: Fiber.FiberID,
   onExit: (status: number) => void
 ) {
-  T.run(interruptAllAs(id)(Supervisor.mainFibers), () => {
+  Fiber.interruptAllAs(Supervisor.mainFibers, id).unsafeRunAsyncWith(() => {
     setTimeout(() => {
       if (Supervisor.mainFibers.size === 0) {
         onExit(status)
@@ -143,7 +136,7 @@ export class NodeRuntime<R, X> {
    * Note: this should be used only in node.js as it depends on global process
    */
   runMain<E, A>(
-    effect: T.Effect<R, E, A>,
+    effect: Effect<R, E, A>,
     customHook: (cont: NodeJS.SignalsListener) => NodeJS.SignalsListener = defaultHook,
     customTeardown: typeof defaultTeardown = defaultTeardown
   ): void {

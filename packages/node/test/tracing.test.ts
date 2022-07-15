@@ -1,68 +1,61 @@
-import "@effect-ts/core/Tracing/Enable"
+//import "@effect/core/Tracing/Enable"
 
-import * as T from "@effect-ts/core/Effect"
-import * as C from "@effect-ts/core/Effect/Cause"
-import * as Ex from "@effect-ts/core/Effect/Exit"
-import { pipe } from "@effect-ts/core/Function"
+import { pipe } from "@tsplus/stdlib/data/Function"
 
 describe("Tracing & Optimizations", () => {
   it("should collect traces", async () => {
     const res = await pipe(
-      T.succeed(1),
-      T.chain((n) => {
-        return T.succeed(n + 1)
+      Effect.succeed(1),
+      Effect.$.flatMap((n) => {
+        return Effect.succeed(n + 1)
       }),
-      T.chain((n) => {
-        return T.succeed(n + 1)
+      Effect.$.flatMap((n) => {
+        return Effect.succeed(n + 1)
       }),
-      T.chain((n) => {
-        return T.succeed(n + 1)
+      Effect.$.flatMap((n) => {
+        return Effect.succeed(n + 1)
       }),
-      T.tap((n) => {
-        return T.fail(`(${n})`)
+      Effect.$.tap((n) => {
+        return Effect.fail(`(${n})`)
       }),
-      T.catchAll(function handle(n) {
-        return T.succeed(n)
+      Effect.$.catchAll(function handle(n) {
+        return Effect.succeed(n)
       }),
-      T.chain((n) => {
-        return T.fail(`error: ${n}`)
+      Effect.$.flatMap((n) => {
+        return Effect.fail(`error: ${n}`)
       }),
-      T.chain(() => T.succeed(0)),
-      T.result,
-      T.runPromise
-    )
+      Effect.$.flatMap(() => Effect.succeed(0))
+    ).result.unsafeRunPromise()
 
-    Ex.assertsFailure(res)
+    Exit.assertsFailure(res)
 
     console.log(
-      C.pretty(res.cause, {
-        renderError: C.defaultRenderer.renderError,
-        renderUnknown: C.defaultRenderer.renderUnknown,
-        renderTrace: C.defaultRenderer.renderTrace
+      Cause.pretty(res.cause, {
+        renderError: Cause.defaultRenderer.renderError,
+        renderUnknown: Cause.defaultRenderer.renderUnknown,
+        renderTrace: Cause.defaultRenderer.renderTrace
       })
     )
 
-    expect(C.untraced(res.cause)).toEqual(C.fail("error: (4)"))
+    expect(Cause.untraced(res.cause)).toEqual(Cause.fail("error: (4)"))
   })
 
   it("should collect 2", async () => {
-    const res = await pipe(
-      T.succeed("ok"),
-      T.tap(() => T.unit),
-      T.tap(() => T.unit),
-      T.tap(() => T.unit),
-      T.map((x) => `(${x})`),
-      T.chain((n) => T.fail(`error: ${n}`)),
-      T.runPromiseExit
-    )
+    const res = await Effect.succeed("ok")
+      .tap(() => Effect.unit)
+      .tap(() => Effect.unit)
+      .tap(() => Effect.unit)
+      .map((x) => `(${x})`)
+      .flatMap((n) => Effect.fail(`error: ${n}`))
+      .unsafeRunPromise()
 
-    Ex.assertsFailure(res)
+    Exit.assertsFailure(res)
 
     console.log(
-      C.pretty(res.cause, {
-        renderError: C.defaultRenderer.renderError,
-        renderUnknown: C.defaultRenderer.renderUnknown,
-        renderTrace: C.defaultRenderer.renderTrace
+      Cause.pretty(res.cause, {
+        renderError: Cause.defaultRenderer.renderError,
+        renderUnknown: Cause.defaultRenderer.renderUnknown,
+        renderTrace: Cause.defaultRenderer.renderTrace
       })
     )
   })
