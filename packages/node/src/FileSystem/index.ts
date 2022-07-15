@@ -5,8 +5,12 @@ import * as fs from "fs"
 /**
  * @tsplus type effect/node/NodeFS.Ops
  */
-export interface NodeFSOps {}
-export const NodeFS: NodeFSOps = {}
+export interface NodeFSOps {
+  Tag: Tag<NodeFS>
+}
+export const NodeFS: NodeFSOps = {
+  Tag: Service.Tag<NodeFS>()
+}
 
 // LEGACY:begin
 export type Flat<A> = { readonly [k in keyof A]: A[k] } extends infer X ? X : never
@@ -189,11 +193,9 @@ export const makeLiveFS = Effect.succeedWith(() => {
   } as const
 })
 
-export interface FS extends Effect.Success<typeof makeLiveFS> {}
+export interface NodeFS extends Effect.Success<typeof makeLiveFS> {}
 
-export const FS = Service.Tag<FS>()
-
-export const accessors = Effect.deriveLifted(FS)(
+export const accessors = Effect.deriveLifted(NodeFS.Tag)(
   ["writeFile", "readFile", "stat", "access", "fileExists", "rm", "rmDir"],
   [],
   []
@@ -230,4 +232,4 @@ export const writeFile = accessors.writeFile
 /**
  * @tsplus static effect/node/NodeFS.Ops LiveFS
  */
-export const LiveFS = Layer.fromEffect(FS, makeLiveFS)
+export const LiveFS = Layer.fromEffect(NodeFS.Tag, makeLiveFS)
