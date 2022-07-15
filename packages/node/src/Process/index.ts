@@ -2,8 +2,7 @@
 
 import * as P from "process"
 
-import type { Byte } from "../Byte/index.js"
-import { chunk } from "../Byte/index.js"
+import { Byte } from "../Byte/index.js"
 
 export class StdinError {
   readonly _tag = "StdinError"
@@ -18,7 +17,7 @@ export const stdin: Stream<never, StdinError, Byte> = Stream.fromEffect(() =>
 ).flatMap(({ tuple: [rs, cleanup] }) =>
   Stream.async<never, StdinError, Byte>((cb) => {
     const onData = (data: Buffer): void => {
-      cb(Effect.succeed(chunk(data)))
+      cb(Effect.succeed(Byte.chunk(data)))
     }
     const onError = (error: Error): void => {
       cb(Effect.fail(Maybe.some(new StdinError(error))))

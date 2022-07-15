@@ -2,6 +2,12 @@
 
 import * as fs from "fs"
 
+/**
+ * @tsplus type effect/node/NodeFS.Ops
+ */
+export interface NodeFSOps {}
+export const NodeFS: NodeFSOps = {}
+
 // LEGACY:begin
 export type Flat<A> = { readonly [k in keyof A]: A[k] } extends infer X ? X : never
 function makeCase<K extends string>(k: K) {
@@ -187,11 +193,41 @@ export interface FS extends Effect.Success<typeof makeLiveFS> {}
 
 export const FS = Service.Tag<FS>()
 
-export const { access, fileExists, readFile, rm, rmDir, stat, writeFile } =
-  Effect.deriveLifted(FS)(
-    ["writeFile", "readFile", "stat", "access", "fileExists", "rm", "rmDir"],
-    [],
-    []
-  )
+export const accessors = Effect.deriveLifted(FS)(
+  ["writeFile", "readFile", "stat", "access", "fileExists", "rm", "rmDir"],
+  [],
+  []
+)
+/**
+ * @tsplus static effect/node/NodeFS.Ops access
+ */
+export const access = accessors.access
+/**
+ * @tsplus static effect/node/NodeFS.Ops fileExists
+ */
+export const fileExists = accessors.fileExists
+/**
+ * @tsplus static effect/node/NodeFS.Ops readFile
+ */
+export const readFile = accessors.readFile
+/**
+ * @tsplus static effect/node/NodeFS.Ops rm
+ */
+export const rm = accessors.rm
+/**
+ * @tsplus static effect/node/NodeFS.Ops rmDir
+ */
+export const rmDir = accessors.rmDir
+/**
+ * @tsplus static effect/node/NodeFS.Ops stat
+ */
+export const stat = accessors.stat
+/**
+ * @tsplus static effect/node/NodeFS.Ops writeFile
+ */
+export const writeFile = accessors.writeFile
 
+/**
+ * @tsplus static effect/node/NodeFS.Ops LiveFS
+ */
 export const LiveFS = Layer.fromEffect(FS, makeLiveFS)
