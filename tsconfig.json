@@ -1,8 +1,8 @@
 {
   "extends": "./tsconfig.base.json",
-  "files": [],
-  "compilerOptions": {
-    "baseUrl": ".",
-    "target": "ES2018"
-  }
+  "references": [
+    { "path": "./tsconfig.build.json" },
+    { "path": "./tsconfig.test.json" },
+    { "path": "./tsconfig.examples.json" }
+  ]
 }
