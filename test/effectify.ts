@@ -24,9 +24,17 @@ describe.concurrent("effectify (readFile)", () => {
     })
   )
 
-  it.effect("preserves overloads", () =>
+  it.effect("preserves overloads (1)", () =>
     Effect.gen(function* ($) {
       const x = yield* $(readFile1(__filename, "utf8"))
+      assert.match(x.toString(), /^import/)
+    })
+  )
+
+  it.effect("preserves overloads (2)", () =>
+    Effect.gen(function* ($) {
+      const { signal } = new AbortController()
+      const x = yield* $(readFile1(__filename, { signal }))
       assert.match(x.toString(), /^import/)
     })
   )
