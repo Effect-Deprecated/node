@@ -40,7 +40,9 @@ const close = (fd: number) =>
   })
 
 export const open = (path: string, flags?: NFS.OpenMode, mode?: NFS.Mode) =>
-  Effect.acquireRelease(unsafeOpen(path, flags, mode), (fd) => Effect.ignore(close(fd)))
+  Effect.acquireRelease(unsafeOpen(path, flags, mode), (fd) =>
+    Effect.ignoreLogged(close(fd))
+  )
 
 export const read = (
   fd: number,
