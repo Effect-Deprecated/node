@@ -50,6 +50,10 @@ export const stream = <A>(
         stream.on("readable", () => {
           emit.single(stream)
         })
+
+        if (stream.readable) {
+          emit.single(stream)
+        }
       }, 0)
     ),
     Stream.unwrapScoped,
