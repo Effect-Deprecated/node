@@ -5,6 +5,8 @@ import { LazyArg, pipe } from "@fp-ts/data/Function"
 import * as Option from "@fp-ts/data/Option"
 import { Readable, Writable } from "stream"
 
+export const DEFAULT_CHUNK_SIZE = 64 * 1024
+
 export class ReadableError {
   readonly _tag = "ReadableError"
   constructor(readonly error: Error) {}
@@ -23,7 +25,7 @@ export type ReadableStream<A> = Stream.Stream<never, ReadableError, A>
 
 export const stream = <A>(
   evaluate: LazyArg<Readable>,
-  { chunkSize = 64 * 1024 }: StreamOptions = {}
+  { chunkSize = DEFAULT_CHUNK_SIZE }: StreamOptions = {}
 ): ReadableStream<A> =>
   pipe(
     Effect.acquireRelease(Effect.sync(evaluate), (stream) =>

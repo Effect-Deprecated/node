@@ -6,6 +6,8 @@ import * as Option from "@fp-ts/data/Option"
 import * as NFS from "fs"
 import { ErrnoError } from "./error"
 
+export const DEFAULT_CHUNK_SIZE = 512 * 1024
+
 export class OpenError {
   readonly _tag = "OpenError"
   constructor(readonly error: unknown) {}
@@ -93,7 +95,12 @@ export interface StreamOptions {
 
 export const stream = (
   path: string,
-  { bufferSize = 4, chunkSize = 64 * 1024, offset = 0, bytesToRead }: StreamOptions = {}
+  {
+    bufferSize = 4,
+    chunkSize = DEFAULT_CHUNK_SIZE,
+    offset = 0,
+    bytesToRead
+  }: StreamOptions = {}
 ) =>
   pipe(
     open(path, "r"),
