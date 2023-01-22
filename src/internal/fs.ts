@@ -6,15 +6,24 @@ import * as Option from "@fp-ts/data/Option"
 import * as NFS from "fs"
 import { ErrnoError } from "./error"
 
+export class OpenError {
+  readonly _tag = "OpenError"
+  constructor(readonly error: unknown) {}
+}
+
 const unsafeOpen = (path: string, flags?: NFS.OpenMode, mode?: NFS.Mode) =>
-  Effect.async<never, ErrnoError, number>((resume) => {
-    NFS.open(path, flags, mode, (err, fd) => {
-      if (err) {
-        resume(Effect.fail(new ErrnoError(err)))
-      } else {
-        resume(Effect.succeed(fd))
-      }
-    })
+  Effect.async<never, ErrnoError | OpenError, number>((resume) => {
+    try {
+      NFS.open(path, flags, mode, (err, fd) => {
+        if (err) {
+          resume(Effect.fail(new ErrnoError(err)))
+        } else {
+          resume(Effect.succeed(fd))
+        }
+      })
+    } catch (err) {
+      resume(Effect.fail(new OpenError(err)))
+    }
   })
 
 const close = (fd: number) =>
