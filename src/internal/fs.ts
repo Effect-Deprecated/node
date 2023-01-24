@@ -13,14 +13,19 @@ export class OpenError {
   constructor(readonly error: unknown) {}
 }
 
+export class Fd {
+  readonly _tag = "Fd"
+  constructor(readonly fd: number) {}
+}
+
 const unsafeOpen = (path: string, flags?: NFS.OpenMode, mode?: NFS.Mode) =>
-  Effect.async<never, ErrnoError | OpenError, number>((resume) => {
+  Effect.async<never, ErrnoError | OpenError, Fd>((resume) => {
     try {
       NFS.open(path, flags, mode, (err, fd) => {
         if (err) {
           resume(Effect.fail(new ErrnoError(err)))
         } else {
-          resume(Effect.succeed(fd))
+          resume(Effect.succeed(new Fd(fd)))
         }
       })
     } catch (err) {
@@ -28,9 +33,9 @@ const unsafeOpen = (path: string, flags?: NFS.OpenMode, mode?: NFS.Mode) =>
     }
   })
 
-const close = (fd: number) =>
+const close = (fd: Fd) =>
   Effect.async<never, ErrnoError, void>((resume) => {
-    NFS.close(fd, (err) => {
+    NFS.close(fd.fd, (err) => {
       if (err) {
         resume(Effect.fail(new ErrnoError(err)))
       } else {
@@ -45,14 +50,14 @@ export const open = (path: string, flags?: NFS.OpenMode, mode?: NFS.Mode) =>
   )
 
 export const read = (
-  fd: number,
+  fd: Fd,
   buf: Uint8Array,
   offset: number,
   length: number,
   position: NFS.ReadPosition | null
 ) =>
   Effect.async<never, ErrnoError, number>((resume) => {
-    NFS.read(fd, buf, offset, length, position, (err, bytesRead) => {
+    NFS.read(fd.fd, buf, offset, length, position, (err, bytesRead) => {
       if (err) {
         resume(Effect.fail(new ErrnoError(err)))
       } else {
@@ -61,11 +66,7 @@ export const read = (
     })
   })
 
-export const allocAndRead = (
-  fd: number,
-  size: number,
-  position: NFS.ReadPosition | null
-) =>
+export const allocAndRead = (fd: Fd, size: number, position: NFS.ReadPosition | null) =>
   pipe(
     Effect.sync(() => Buffer.allocUnsafeSlow(size)),
     Effect.flatMap((buf) =>
@@ -129,9 +130,9 @@ export const stream = (
     Stream.bufferChunks(bufferSize)
   )
 
-export const write = (fd: number, data: Uint8Array, offset?: number) =>
+export const write = (fd: Fd, data: Uint8Array, offset?: number) =>
   Effect.async<never, ErrnoError, number>((resume) => {
-    NFS.write(fd, data, offset, (err, written) => {
+    NFS.write(fd.fd, data, offset, (err, written) => {
       if (err) {
         resume(Effect.fail(new ErrnoError(err)))
       } else {
@@ -141,7 +142,7 @@ export const write = (fd: number, data: Uint8Array, offset?: number) =>
   })
 
 export const writeAll = (
-  fd: number,
+  fd: Fd,
   data: Uint8Array,
   offset = 0
 ): Effect.Effect<never, ErrnoError, void> =>
