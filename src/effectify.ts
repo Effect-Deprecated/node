@@ -109,21 +109,65 @@ export function effectify<E1, E2, A, X1, X2, X3, X4, X5>(
   mapError: (e: NonNullable<E1>) => E2
 ): (x1: X1, x2: X2, x3: X3, x4: X4, x5: X5) => Z.Effect<never, E2, A>
 
+export function effectify<E1, E2, E3, A>(
+  fn: (cb: Callback<E1, A>) => void,
+  mapError: (e: NonNullable<E1>) => E2,
+  mapSyncError: (e: unknown) => E3
+): () => Z.Effect<never, E2 | E3, A>
+
+export function effectify<E1, E2, E3, A, X1>(
+  fn: (x1: X1, cb: Callback<E1, A>) => void,
+  mapError: (e: NonNullable<E1>) => E2,
+  mapSyncError: (e: unknown) => E3
+): (x1: X1) => Z.Effect<never, E2 | E3, A>
+
+export function effectify<E1, E2, E3, A, X1, X2>(
+  fn: (x1: X1, x2: X2, cb: Callback<E1, A>) => void,
+  mapError: (e: NonNullable<E1>) => E2,
+  mapSyncError: (e: unknown) => E3
+): (x1: X1, x2: X2) => Z.Effect<never, NonNullable<E2 | E3>, A>
+
+export function effectify<E1, E2, E3, A, X1, X2, X3>(
+  fn: (x1: X1, x2: X2, x3: X3, cb: Callback<E1, A>) => void,
+  mapError: (e: NonNullable<E1>) => E2,
+  mapSyncError: (e: unknown) => E3
+): (x1: X1, x2: X2, x3: X3) => Z.Effect<never, E2 | E3, A>
+
+export function effectify<E1, E2, E3, A, X1, X2, X3, X4>(
+  fn: (x1: X1, x2: X2, x3: X3, x4: X4, cb: Callback<E1, A>) => void,
+  mapError: (e: NonNullable<E1>) => E2,
+  mapSyncError: (e: unknown) => E3
+): (x1: X1, x2: X2, x3: X3, x4: X4) => Z.Effect<never, E2 | E3, A>
+
+export function effectify<E1, E2, E3, A, X1, X2, X3, X4, X5>(
+  fn: (x1: X1, x2: X2, x3: X3, x4: X4, x5: X5, cb: Callback<E1, A>) => void,
+  mapError: (e: NonNullable<E1>) => E2,
+  mapSyncError: (e: unknown) => E3
+): (x1: X1, x2: X2, x3: X3, x4: X4, x5: X5) => Z.Effect<never, E2 | E3, A>
+
 /**
  * Converts a callback-based async function into an `Effect`
  *
  * @param fn - the function to convert
  * @param mapError - mapping function for the error (defaults to identity)
  */
-export function effectify(fn: Function, mapError?: Function) {
+export function effectify(fn: Function, mapError?: Function, mapSyncError?: Function) {
   return (...args: any[]) =>
     Z.async<never, unknown, unknown>((resume) => {
-      fn(...args, (error: unknown, data: unknown) => {
-        if (error) {
-          resume(Z.fail(mapError ? mapError(error) : error))
+      try {
+        fn(...args, (error: unknown, data: unknown) => {
+          if (error) {
+            resume(Z.fail(mapError ? mapError(error) : error))
+          } else {
+            resume(Z.succeed(data))
+          }
+        })
+      } catch (e) {
+        if (mapSyncError) {
+          resume(Z.fail(mapSyncError(e)))
         } else {
-          resume(Z.succeed(data))
+          resume(Z.die(e))
         }
-      })
+      }
     })
 }
