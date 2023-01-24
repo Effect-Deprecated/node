@@ -1,7 +1,7 @@
 import * as Effect from "@effect/io/Effect"
 import * as Exit from "@effect/io/Exit"
 import { LazyArg, pipe } from "@fp-ts/data/Function"
-import * as Net from "net"
+import * as Net from "node:net"
 import type { ReadableStream, WritableSink } from "./stream"
 import * as S from "./stream"
 

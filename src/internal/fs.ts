@@ -3,7 +3,7 @@ import * as Sink from "@effect/stream/Sink"
 import * as Stream from "@effect/stream/Stream"
 import { pipe } from "@fp-ts/data/Function"
 import * as Option from "@fp-ts/data/Option"
-import * as NFS from "fs"
+import * as NFS from "node:fs"
 import { ErrnoError } from "./error"
 
 export const DEFAULT_CHUNK_SIZE = 512 * 1024

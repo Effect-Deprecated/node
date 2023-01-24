@@ -3,7 +3,7 @@ import * as Stream from "@effect/stream/Stream"
 import * as Sink from "@effect/stream/Sink"
 import { LazyArg, pipe } from "@fp-ts/data/Function"
 import * as Option from "@fp-ts/data/Option"
-import { Readable, Writable } from "stream"
+import { Readable, Writable } from "node:stream"
 
 export const DEFAULT_CHUNK_SIZE = 64 * 1024
 
