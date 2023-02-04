@@ -1,9 +1,9 @@
 import * as Cause from "@effect/io/Cause"
-import * as Chunk from "@fp-ts/data/Chunk"
-import * as Option from "@fp-ts/core/Option"
 import * as Effect from "@effect/io/Effect"
 import * as Exit from "@effect/io/Exit"
 import { pipe } from "@fp-ts/core/Function"
+import * as Option from "@fp-ts/core/Option"
+import * as Chunk from "@fp-ts/data/Chunk"
 
 export class NodeProcessExit {
   readonly _tag = "NodeProcessExit"
@@ -15,7 +15,7 @@ export const exit = (code: number) => Effect.fail(new NodeProcessExit(code))
 const handleExit = <E, A>(exit: Exit.Exit<E | NodeProcessExit, A>) => {
   if (Exit.isSuccess(exit)) {
     process.exit(0)
-  } else if (Exit.isInterrupted(exit)) {
+  } else if (Cause.isInterruptedOnly(exit.cause)) {
     process.exit(0)
   } else {
     const exitCode = pipe(

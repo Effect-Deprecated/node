@@ -26,9 +26,7 @@ const close = effectify(NFS.close, (_) => new ErrnoError(_ as any))
 
 export const open = (path: string, flags?: NFS.OpenMode, mode?: NFS.Mode) =>
   pipe(
-    Effect.acquireRelease(unsafeOpen(path, flags, mode), (fd) =>
-      Effect.ignoreLogged(close(fd))
-    ),
+    Effect.acquireRelease(unsafeOpen(path, flags, mode), (fd) => Effect.ignoreLogged(close(fd))),
     Effect.map((_) => new Fd(_))
   )
 
@@ -103,10 +101,9 @@ export const stream = (
           return Effect.succeedNone()
         }
 
-        const toRead =
-          bytesToRead !== undefined && bytesToRead - (position - offset) < chunkSize
-            ? bytesToRead - (position - offset)
-            : chunkSize
+        const toRead = bytesToRead !== undefined && bytesToRead - (position - offset) < chunkSize
+          ? bytesToRead - (position - offset)
+          : chunkSize
 
         return pipe(
           allocAndRead(fd, toRead, position),

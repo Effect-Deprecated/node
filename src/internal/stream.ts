@@ -1,9 +1,10 @@
 import * as Effect from "@effect/io/Effect"
-import * as Stream from "@effect/stream/Stream"
 import * as Sink from "@effect/stream/Sink"
-import { LazyArg, pipe } from "@fp-ts/core/Function"
+import * as Stream from "@effect/stream/Stream"
+import type { LazyArg } from "@fp-ts/core/Function"
+import { pipe } from "@fp-ts/core/Function"
 import * as Option from "@fp-ts/core/Option"
-import { Readable, Writable } from "node:stream"
+import type { Readable, Writable } from "node:stream"
 
 export const DEFAULT_CHUNK_SIZE = 64 * 1024
 
@@ -35,8 +36,7 @@ export const stream = <A>(
         if (!stream.closed) {
           stream.destroy()
         }
-      })
-    ),
+      })),
     Effect.map((stream) =>
       Stream.async<never, ReadableError, Readable>((emit) => {
         stream.once("error", (err) => {
@@ -78,7 +78,7 @@ export type WritableSink<A> = Sink.Sink<never, WritableError, A, never, void>
 
 export const sink = <A>(
   evaluate: LazyArg<Writable>,
-  { endOnExit = true, encoding = "binary" }: SinkOptions = {}
+  { encoding = "binary", endOnExit = true }: SinkOptions = {}
 ): WritableSink<A> =>
   pipe(
     Effect.acquireRelease(Effect.sync(evaluate), endOnExit ? end : () => Effect.unit()),
@@ -96,11 +96,9 @@ const end = (stream: Writable) =>
     stream.end(() => resume(Effect.unit()))
   })
 
-const makeSink = <A>(stream: Writable, encoding: BufferEncoding) =>
-  Sink.forEach(write<A>(stream, encoding))
+const makeSink = <A>(stream: Writable, encoding: BufferEncoding) => Sink.forEach(write<A>(stream, encoding))
 
-const write =
-  <A>(stream: Writable, encoding: BufferEncoding) =>
+const write = <A>(stream: Writable, encoding: BufferEncoding) =>
   (_: A) =>
     Effect.async<never, WritableError, void>((resume) => {
       stream.write(_, encoding, (err) => {
