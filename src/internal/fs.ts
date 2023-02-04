@@ -1,14 +1,15 @@
 import * as Effect from "@effect/io/Effect"
+import { effectify } from "@effect/node/internal/effectify"
 import * as Sink from "@effect/stream/Sink"
 import * as Stream from "@effect/stream/Stream"
-import { pipe } from "@fp-ts/data/Function"
-import * as Option from "@fp-ts/data/Option"
+import { pipe } from "@fp-ts/core/Function"
+import * as Option from "@fp-ts/core/Option"
 import * as NFS from "node:fs"
 import { ErrnoError } from "./error"
 
 export const DEFAULT_CHUNK_SIZE = 512 * 1024
 
-export class OpenError {
+export class FsOpenError {
   readonly _tag = "OpenError"
   constructor(readonly error: unknown) {}
 }
@@ -18,35 +19,17 @@ export class Fd {
   constructor(readonly fd: number) {}
 }
 
-const unsafeOpen = (path: string, flags?: NFS.OpenMode, mode?: NFS.Mode) =>
-  Effect.async<never, ErrnoError | OpenError, Fd>((resume) => {
-    try {
-      NFS.open(path, flags, mode, (err, fd) => {
-        if (err) {
-          resume(Effect.fail(new ErrnoError(err)))
-        } else {
-          resume(Effect.succeed(new Fd(fd)))
-        }
-      })
-    } catch (err) {
-      resume(Effect.fail(new OpenError(err)))
-    }
-  })
+const errnoWrap = (_: NodeJS.ErrnoException) => new ErrnoError(_)
 
-const close = (fd: Fd) =>
-  Effect.async<never, ErrnoError, void>((resume) => {
-    NFS.close(fd.fd, (err) => {
-      if (err) {
-        resume(Effect.fail(new ErrnoError(err)))
-      } else {
-        resume(Effect.unit())
-      }
-    })
-  })
+const unsafeOpen = effectify(NFS.open, errnoWrap, (_) => new FsOpenError(_))
+const close = effectify(NFS.close, (_) => new ErrnoError(_ as any))
 
 export const open = (path: string, flags?: NFS.OpenMode, mode?: NFS.Mode) =>
-  Effect.acquireRelease(unsafeOpen(path, flags, mode), (fd) =>
-    Effect.ignoreLogged(close(fd))
+  pipe(
+    Effect.acquireRelease(unsafeOpen(path, flags, mode), (fd) =>
+      Effect.ignoreLogged(close(fd))
+    ),
+    Effect.map((_) => new Fd(_))
   )
 
 export const read = (
@@ -66,6 +49,13 @@ export const read = (
     })
   })
 
+export class FsStatError {
+  readonly _tag = "FsStatError"
+  constructor(readonly error: unknown) {}
+}
+
+export const stat = effectify(NFS.stat, errnoWrap, (_) => new FsStatError(_))
+
 export const allocAndRead = (fd: Fd, size: number, position: NFS.ReadPosition | null) =>
   pipe(
     Effect.sync(() => Buffer.allocUnsafeSlow(size)),
@@ -74,7 +64,7 @@ export const allocAndRead = (fd: Fd, size: number, position: NFS.ReadPosition | 
         read(fd, buf, 0, size, position),
         Effect.map((bytesRead) => {
           if (bytesRead === 0) {
-            return Option.none
+            return Option.none()
           }
 
           if (bytesRead === size) {
