@@ -1,8 +1,8 @@
 import * as Effect from "@effect/io/Effect"
 import * as Stream from "@effect/stream/Stream"
 import * as Sink from "@effect/stream/Sink"
-import { LazyArg, pipe } from "@fp-ts/data/Function"
-import * as Option from "@fp-ts/data/Option"
+import { LazyArg, pipe } from "@fp-ts/core/Function"
+import * as Option from "@fp-ts/core/Option"
 import { Readable, Writable } from "node:stream"
 
 export const DEFAULT_CHUNK_SIZE = 64 * 1024
@@ -66,7 +66,7 @@ const readChunk = <A>(
 ): Effect.Effect<never, Option.Option<never>, A> =>
   pipe(
     Effect.sync(() => stream.read(size) as A | null),
-    Effect.flatMap((a) => (a ? Effect.succeed(a) : Effect.fail(Option.none)))
+    Effect.flatMap((a) => (a ? Effect.succeed(a) : Effect.fail(Option.none())))
   )
 
 export interface SinkOptions {
