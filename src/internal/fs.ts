@@ -4,13 +4,14 @@ import * as Sink from "@effect/stream/Sink"
 import * as Stream from "@effect/stream/Stream"
 import { pipe } from "@fp-ts/core/Function"
 import * as Option from "@fp-ts/core/Option"
+import type { Mode, ObjectEncodingOptions } from "node:fs"
 import * as NFS from "node:fs"
 import { ErrnoError } from "./error"
 
 export const DEFAULT_CHUNK_SIZE = 512 * 1024
 
 export class FsOpenError {
-  readonly _tag = "OpenError"
+  readonly _tag = "FsOpenError"
   constructor(readonly error: unknown) {}
 }
 
@@ -30,6 +31,95 @@ export const open = (path: string, flags?: NFS.OpenMode, mode?: NFS.Mode) =>
     Effect.map((_) => new Fd(_))
   )
 
+export class FsStatError {
+  readonly _tag = "FsStatError"
+  constructor(readonly error: unknown) {}
+}
+
+export const stat = effectify(NFS.stat, errnoWrap, (_) => new FsStatError(_))
+
+export class FsReaddirError {
+  readonly _tag = "FsReaddirError"
+  constructor(readonly error: unknown) {}
+}
+export const readdir = effectify(NFS.readdir, errnoWrap, (_) => new FsReaddirError(_))
+
+export class FsReadFileError {
+  readonly _tag = "FsReadFileError"
+  constructor(readonly error: unknown) {}
+}
+
+export const readFile: {
+  (path: NFS.PathOrFileDescriptor, options?: {
+    flag?: string
+  }): Effect.Effect<never, ErrnoError | FsReadFileError, Buffer>
+  (path: NFS.PathOrFileDescriptor, options: {
+    encoding: BufferEncoding
+    flag?: string
+  }): Effect.Effect<never, ErrnoError | FsReadFileError, string>
+} = (path, options) =>
+  Effect.asyncInterrupt<never, ErrnoError | FsReadFileError, Buffer | string>((resume) => {
+    const controller = new AbortController()
+
+    try {
+      NFS.readFile(path, {
+        ...(options || {}),
+        signal: controller.signal
+      }, (err, data) => {
+        if (err) {
+          resume(Effect.fail(new ErrnoError(err)))
+        } else {
+          resume(Effect.succeed(data))
+        }
+      })
+    } catch (err) {
+      resume(Effect.fail(new FsReadFileError(err)))
+    }
+
+    return Effect.sync(() => {
+      controller.abort()
+    })
+  }) as any
+
+export class FsWriteFileError {
+  readonly _tag = "FsWriteFileError"
+  constructor(readonly error: unknown) {}
+}
+
+export const writeFile = (
+  path: NFS.PathOrFileDescriptor,
+  data: string | NodeJS.ArrayBufferView,
+  options?: (
+    & ObjectEncodingOptions
+    & {
+      mode?: Mode
+      flag?: string
+    }
+  )
+) =>
+  Effect.asyncInterrupt<never, ErrnoError | FsWriteFileError, void>((resume) => {
+    const controller = new AbortController()
+
+    try {
+      NFS.writeFile(path, data, {
+        ...(options || {}),
+        signal: controller.signal
+      }, (err) => {
+        if (err) {
+          resume(Effect.fail(new ErrnoError(err)))
+        } else {
+          resume(Effect.unit())
+        }
+      })
+    } catch (err) {
+      resume(Effect.fail(new FsWriteFileError(err)))
+    }
+
+    return Effect.sync(() => {
+      controller.abort()
+    })
+  }) as any
+
 export const read = (
   fd: Fd,
   buf: Uint8Array,
@@ -46,13 +136,6 @@ export const read = (
       }
     })
   })
-
-export class FsStatError {
-  readonly _tag = "FsStatError"
-  constructor(readonly error: unknown) {}
-}
-
-export const stat = effectify(NFS.stat, errnoWrap, (_) => new FsStatError(_))
 
 export const allocAndRead = (fd: Fd, size: number, position: NFS.ReadPosition | null) =>
   pipe(
