@@ -134,7 +134,7 @@ export const writeFile = (
     return Effect.sync(() => {
       controller.abort()
     })
-  }) as any
+  })
 
 export class FsCopyFileError {
   readonly _tag = "FsCopyFileError"
