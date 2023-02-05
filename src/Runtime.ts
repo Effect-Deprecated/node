@@ -4,11 +4,21 @@ import * as Exit from "@effect/io/Exit"
 import * as Fiber from "@effect/io/Fiber"
 import type * as FiberId from "@effect/io/Fiber/Id"
 
-export const defaultTeardown = <E, A>(exit: Exit.Exit<E, A>, onExit: (code: number) => void) => {
+export const defaultTeardown = <E, A>(
+  exit: Exit.Exit<E, A>,
+  onExit: (code: number) => void
+) => {
   onExit(Exit.isFailure(exit) && !Cause.isInterruptedOnly(exit.cause) ? 1 : 0)
 }
 
-export const runMain = <E, A>(effect: Effect.Effect<never, E, A>, teardown = defaultTeardown) => {
+/**
+ * @since 1.0.0
+ * @tsplus fluent effect/io/Effect runMain
+ */
+export const runMain = <E, A>(
+  effect: Effect.Effect<never, E, A>,
+  teardown = defaultTeardown
+) => {
   const fiber = Effect.runFork(effect)
 
   fiber.unsafeAddObserver((exit) =>
