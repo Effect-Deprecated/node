@@ -1,14 +1,19 @@
-import * as Fs from "@effect/node/internal/fs"
-import { pipe } from "@fp-ts/core/Function"
 import * as Effect from "@effect/io/Effect"
-import * as Exit from "@effect/io/Exit"
-import * as Cause from "@effect/io/Cause"
+import { LiveNodeFs, NodeFs } from "@effect/node/Fs"
+import { runMain } from "@effect/node/Runtime"
 import * as Stream from "@effect/stream/Stream"
+import { pipe } from "@fp-ts/core/Function"
 
-const program = pipe(Fs.stream(process.argv[2]), Stream.run(Fs.sink(process.argv[3])))
+const program = Effect.gen(function*($) {
+  const fs = yield* $(Effect.service(NodeFs))
 
-Effect.runCallback(program, (exit) => {
-  if (Exit.isFailure(exit)) {
-    console.error(Cause.pretty(exit.cause))
-  }
+  yield* $(
+    pipe(fs.stream(process.argv[2]), Stream.run(fs.sink(process.argv[3])))
+  )
 })
+
+pipe(
+  Effect.provideLayer(program, LiveNodeFs),
+  Effect.catchAllCause(Effect.logErrorCause),
+  runMain
+)

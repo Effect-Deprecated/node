@@ -1,5 +1,5 @@
 import * as Effect from "@effect/io/Effect"
-import * as RT from "@effect/node/internal/runtime"
+import * as RT from "@effect/node/Runtime"
 import { pipe } from "@fp-ts/core/Function"
 import * as Duration from "@fp-ts/data/Duration"
 
