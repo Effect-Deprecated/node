@@ -20,10 +20,8 @@ export class Fd {
   constructor(readonly fd: number) {}
 }
 
-const errnoWrap = (_: NodeJS.ErrnoException) => new ErrnoError(_)
-
-const unsafeOpen = effectify(NFS.open, errnoWrap, (_) => new FsOpenError(_))
-const close = effectify(NFS.close, (_) => new ErrnoError(_ as any))
+const unsafeOpen = effectify(NFS.open, (_, [path]) => new ErrnoError(_, "open", path), (_) => new FsOpenError(_))
+const close = effectify(NFS.close, (_) => new ErrnoError(_ as any, "close"))
 
 export const open = (path: string, flags?: NFS.OpenMode, mode?: NFS.Mode) =>
   pipe(
@@ -36,13 +34,31 @@ export class FsStatError {
   constructor(readonly error: unknown) {}
 }
 
-export const stat = effectify(NFS.stat, errnoWrap, (_) => new FsStatError(_))
+export const stat = effectify(
+  NFS.stat,
+  (_, [path]) => new ErrnoError(_, "stat", path),
+  (_) => new FsStatError(_)
+)
 
 export class FsReaddirError {
   readonly _tag = "FsReaddirError"
   constructor(readonly error: unknown) {}
 }
-export const readdir = effectify(NFS.readdir, errnoWrap, (_) => new FsReaddirError(_))
+export const readdir = effectify(
+  NFS.readdir,
+  (_, [path]) => new ErrnoError(_, "readdir", path),
+  (_) => new FsReaddirError(_)
+)
+
+export class FsMkdirError {
+  readonly _tag = "FsMkdirError"
+  constructor(readonly error: unknown) {}
+}
+export const mkdir = effectify(
+  NFS.mkdir,
+  (_, [path]) => new ErrnoError(_, "mkdir", path),
+  (_) => new FsMkdirError(_)
+)
 
 export class FsReadFileError {
   readonly _tag = "FsReadFileError"
@@ -67,7 +83,7 @@ export const readFile: {
         signal: controller.signal
       }, (err, data) => {
         if (err) {
-          resume(Effect.fail(new ErrnoError(err)))
+          resume(Effect.fail(new ErrnoError(err, "readFile", path)))
         } else {
           resume(Effect.succeed(data))
         }
@@ -106,7 +122,7 @@ export const writeFile = (
         signal: controller.signal
       }, (err) => {
         if (err) {
-          resume(Effect.fail(new ErrnoError(err)))
+          resume(Effect.fail(new ErrnoError(err, "writeFile", path)))
         } else {
           resume(Effect.unit())
         }
@@ -125,7 +141,11 @@ export class FsCopyFileError {
   constructor(readonly error: unknown) {}
 }
 
-export const copyFile = effectify(NFS.copyFile, errnoWrap, (_) => new FsCopyFileError(_))
+export const copyFile = effectify(
+  NFS.copyFile,
+  (_, [, dest]) => new ErrnoError(_, "copyFile", dest),
+  (_) => new FsCopyFileError(_)
+)
 
 export const read = (
   fd: Fd,
@@ -137,7 +157,7 @@ export const read = (
   Effect.async<never, ErrnoError, number>((resume) => {
     NFS.read(fd.fd, buf, offset, length, position, (err, bytesRead) => {
       if (err) {
-        resume(Effect.fail(new ErrnoError(err)))
+        resume(Effect.fail(new ErrnoError(err, "read")))
       } else {
         resume(Effect.succeed(bytesRead))
       }
@@ -211,7 +231,7 @@ export const write = (fd: Fd, data: Uint8Array, offset?: number) =>
   Effect.async<never, ErrnoError, number>((resume) => {
     NFS.write(fd.fd, data, offset, (err, written) => {
       if (err) {
-        resume(Effect.fail(new ErrnoError(err)))
+        resume(Effect.fail(new ErrnoError(err, "write")))
       } else {
         resume(Effect.succeed(written))
       }

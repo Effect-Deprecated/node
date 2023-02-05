@@ -231,26 +231,26 @@ export const effectify: {
   <F extends (...args: Array<any>) => any>(fn: F): Effectify<F, CallbackError<F>>
   <F extends (...args: Array<any>) => any, E>(
     fn: F,
-    onError: (error: CallbackError<F>) => E
+    onError: (error: CallbackError<F>, args: Parameters<F>) => E
   ): Effectify<F, E>
   <F extends (...args: Array<any>) => any, E, E2>(
     fn: F,
-    onError: (error: CallbackError<F>) => E,
-    onSyncError: (error: unknown) => E2
+    onError: (error: CallbackError<F>, args: Parameters<F>) => E,
+    onSyncError: (error: unknown, args: Parameters<F>) => E2
   ): Effectify<F, E | E2>
 } =
-  (<A>(fn: Function, onError?: (e: any) => any, onSyncError?: (e: any) => any) =>
+  (<A>(fn: Function, onError?: (e: any, args: any) => any, onSyncError?: (e: any, args: any) => any) =>
     (...args: Array<any>) =>
       Effect.async<never, Error, A>((resume) => {
         try {
           fn(...args, (err: Error | null, result: A) => {
             if (err) {
-              resume(Effect.fail(onError ? onError(err) : err))
+              resume(Effect.fail(onError ? onError(err, args) : err))
             } else {
               resume(Effect.succeed(result))
             }
           })
         } catch (err) {
-          resume(onSyncError ? Effect.fail(onSyncError(err)) : Effect.die(err))
+          resume(onSyncError ? Effect.fail(onSyncError(err, args)) : Effect.die(err))
         }
       })) as any

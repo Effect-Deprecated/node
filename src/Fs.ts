@@ -14,6 +14,7 @@ const make = () => ({
   open: internal.open,
   stat: internal.stat,
   readdir: internal.readdir,
+  mkdir: internal.mkdir,
   readFile: internal.readFile,
   writeFile: internal.writeFile,
   copyFile: internal.copyFile,
