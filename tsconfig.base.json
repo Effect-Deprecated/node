@@ -37,7 +37,6 @@
     "incremental": true,
     "removeComments": false,
     "paths": {
-      "@effect/io/*": ["./node_modules/@effect/io/src/*"],
       "@effect/node": ["./src/index.ts"],
       "@effect/node/test/*": ["./test/*"],
       "@effect/node/examples/*": ["./examples/*"],
