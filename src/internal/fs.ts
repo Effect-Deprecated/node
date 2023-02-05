@@ -120,6 +120,13 @@ export const writeFile = (
     })
   }) as any
 
+export class FsCopyFileError {
+  readonly _tag = "FsCopyFileError"
+  constructor(readonly error: unknown) {}
+}
+
+export const copyFile = effectify(NFS.copyFile, errnoWrap, (_) => new FsCopyFileError(_))
+
 export const read = (
   fd: Fd,
   buf: Uint8Array,

@@ -16,6 +16,7 @@ const make = () => ({
   readdir: internal.readdir,
   readFile: internal.readFile,
   writeFile: internal.writeFile,
+  copyFile: internal.copyFile,
   read: internal.read,
   allocAndRead: internal.allocAndRead,
   write: internal.write,
