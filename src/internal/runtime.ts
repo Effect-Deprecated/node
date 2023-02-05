@@ -2,57 +2,38 @@ import * as Cause from "@effect/io/Cause"
 import * as Effect from "@effect/io/Effect"
 import * as Exit from "@effect/io/Exit"
 import * as Fiber from "@effect/io/Fiber"
-import * as FiberId from "@effect/io/Fiber/Id"
-import { pipe } from "@fp-ts/core/Function"
-import * as Option from "@fp-ts/core/Option"
-import * as Chunk from "@fp-ts/data/Chunk"
+import type * as FiberId from "@effect/io/Fiber/Id"
 
-export class NodeProcessExit {
-  readonly _tag = "NodeProcessExit"
-  constructor(readonly code: number) {}
+export const defaultTeardown = <E, A>(exit: Exit.Exit<E, A>, onExit: (code: number) => void) => {
+  onExit(Exit.isFailure(exit) && !Cause.isInterruptedOnly(exit.cause) ? 1 : 0)
 }
 
-export const exit = (code: number) => Effect.fail(new NodeProcessExit(code))
-
-const handleExit = (id: FiberId.FiberId) => <E, A>(exit: Exit.Exit<E | NodeProcessExit, A>) => {
-  if (Exit.isSuccess(exit)) {
-    process.exit(0)
-  } else if (Cause.isInterruptedOnly(exit.cause)) {
-    process.exit(0)
-  } else {
-    const exitCode = pipe(
-      Chunk.findFirst(
-      Cause.failures(exit.cause),
-        (_): _ is NodeProcessExit =>
-          typeof _ === "object" &&
-          _ !== null &&
-          "_tag" in _ &&
-          _._tag === "NodeProcessExit"
-      ),
-      Option.match(
-        () => 1,
-        (_) => _.code
-      )
-    )
-    process.exit(exitCode)
-  }
-}
-
-export const runMain = <E, A>(effect: Effect.Effect<never, E | NodeProcessExit, A>) => {
+export const runMain = <E, A>(effect: Effect.Effect<never, E, A>, teardown = defaultTeardown) => {
   const fiber = Effect.runFork(effect)
 
-  fiber.unsafeAddObserver(handleExit(fiber.id()))
+  fiber.unsafeAddObserver((exit) =>
+    teardown(exit, (code) =>
+      Effect.runCallback(interruptAll(fiber.id()), () => {
+        process.exit(code)
+      }))
+  )
 
   function onSigint() {
     process.removeListener("SIGINT", onSigint)
     process.removeListener("SIGTERM", onSigint)
 
-    Effect.runFork(interruptAllAndExit(fiber.id(), 0))
+    Effect.runCallback(fiber.interruptAsFork(fiber.id()))
   }
 
   process.once("SIGINT", onSigint)
   process.once("SIGTERM", onSigint)
 }
 
-const interruptAllAndExit = (id: FiberId.FiberId, code: number) =>
-  Effect.flatMap(Fiber.roots(), (_) => Fiber.interruptAllWith(_, id))
+const interruptAll = (id: FiberId.FiberId) =>
+  Effect.flatMap(Fiber.roots(), (roots) => {
+    if (roots.length === 0) {
+      return Effect.unit()
+    }
+
+    return Fiber.interruptAllWith(roots, id)
+  })
