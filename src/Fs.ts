@@ -5,9 +5,13 @@ import { Tag } from "@fp-ts/data/Context"
 export const {
   DEFAULT_CHUNK_SIZE,
   Fd,
+  FsCopyFileError,
+  FsMkdirError,
   FsOpenError,
+  FsReadFileError,
   FsReaddirError,
-  FsStatError
+  FsStatError,
+  FsWriteFileError
 } = internal
 
 const make = () => ({
