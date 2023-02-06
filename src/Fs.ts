@@ -62,6 +62,16 @@ const mkdir = effectify(
   (_) => new FsMkdirError(_)
 )
 
+export class FsRmError {
+  readonly _tag = "FsRmError"
+  constructor(readonly error: unknown) {}
+}
+const rm = effectify(
+  NFS.rm,
+  (_, [path]) => new ErrnoError(_, "rm", path),
+  (_) => new FsRmError(_)
+)
+
 export class FsReadFileError {
   readonly _tag = "FsReadFileError"
   constructor(readonly error: unknown) {}
@@ -270,6 +280,7 @@ const make = () => ({
   stat,
   readdir,
   mkdir,
+  rm,
   readFile,
   writeFile,
   copyFile,
