@@ -35,7 +35,6 @@
     "module": "ES6",
     "incremental": true,
     "removeComments": false,
-    "tsPlusConfig": "./tsplus.config.json",
     "paths": {
       "@effect/node": ["./src/index.ts"],
       "@effect/node/test/*": ["./test/*"],

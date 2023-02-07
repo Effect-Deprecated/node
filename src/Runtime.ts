@@ -13,7 +13,6 @@ export const defaultTeardown = <E, A>(
 
 /**
  * @since 1.0.0
- * @tsplus fluent effect/io/Effect runMain
  */
 export const runMain = <E, A>(
   effect: Effect.Effect<never, E, A>,
