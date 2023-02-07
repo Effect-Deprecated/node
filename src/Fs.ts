@@ -1,3 +1,4 @@
+import { Tag } from "@effect/data/Context"
 import * as Effect from "@effect/io/Effect"
 import * as Layer from "@effect/io/Layer"
 import { effectify } from "@effect/node/effectify"
@@ -6,7 +7,6 @@ import * as Sink from "@effect/stream/Sink"
 import * as Stream from "@effect/stream/Stream"
 import { pipe } from "@fp-ts/core/Function"
 import * as Option from "@fp-ts/core/Option"
-import { Tag } from "@fp-ts/data/Context"
 import type { Mode, ObjectEncodingOptions } from "node:fs"
 import * as NFS from "node:fs"
 
