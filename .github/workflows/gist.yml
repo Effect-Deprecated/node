@@ -39,8 +39,8 @@ jobs:
       - run: pnpm install
       - run: pnpm run pack
       - name: upload-to-gist
-        uses: tim-smart/actions-upload-to-gist@v2
+        uses: tim-smart/actions-upload-to-gist@v3
         with:
-          token: ${{ secrets.GIST_TOKEN }}
+          gist_token: ${{ secrets.GIST_TOKEN }}
           gist_id: 2249154d563bbbdd603cb09e834361e8
           path: build/artifacts
