@@ -23,7 +23,7 @@ export class Fd {
 }
 
 const unsafeOpen = effectify(NFS.open, (_, [path]) => new ErrnoError(_, "open", path), (_) => new FsOpenError(_))
-const close = effectify(NFS.close, (_) => new ErrnoError(_ as any, "close"))
+const close = effectify(NFS.close, (_) => new ErrnoError(_, "close"))
 
 const open = (path: string, flags?: NFS.OpenMode, mode?: NFS.Mode) =>
   pipe(
@@ -56,7 +56,10 @@ export class FsMkdirError {
   readonly _tag = "FsMkdirError"
   constructor(readonly error: unknown) {}
 }
-const mkdir = effectify(
+const mkdir: (
+  path: NFS.PathLike,
+  options?: NFS.MakeDirectoryOptions
+) => Effect.Effect<never, ErrnoError | FsMkdirError, void> = effectify(
   NFS.mkdir,
   (_, [path]) => new ErrnoError(_, "mkdir", path),
   (_) => new FsMkdirError(_)
