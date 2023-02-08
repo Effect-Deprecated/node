@@ -35,7 +35,6 @@ export class FsStatError {
   readonly _tag = "FsStatError"
   constructor(readonly error: unknown) {}
 }
-
 const stat = effectify(
   NFS.stat,
   (_, [path]) => new ErrnoError(_, "stat", path),
