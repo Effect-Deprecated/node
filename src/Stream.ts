@@ -79,14 +79,23 @@ export type WritableSink<A> = Sink.Sink<never, WritableError, A, never, void>
 export const sink = <A>(
   evaluate: LazyArg<Writable>,
   { encoding = "binary", endOnExit = true }: SinkOptions = {}
-): WritableSink<A> =>
+): WritableSink<A> => endOnExit ? makeSinkWithRelease<A>(evaluate, encoding) : makeSink<A>(evaluate, encoding)
+
+const makeSink = <A>(stream: LazyArg<Writable>, encoding: BufferEncoding) =>
   pipe(
-    Effect.acquireRelease(Effect.sync(evaluate), endOnExit ? end : () => Effect.unit()),
-    Effect.map((_) => makeSink<A>(_, encoding)),
+    Effect.sync(stream),
+    Effect.map((_) => Sink.forEach(write<A>(_, encoding))),
+    Sink.unwrap
+  )
+
+const makeSinkWithRelease = <A>(stream: LazyArg<Writable>, encoding: BufferEncoding) =>
+  pipe(
+    Effect.acquireRelease(Effect.sync(stream), endWritable),
+    Effect.map((_) => Sink.forEach(write<A>(_, encoding))),
     Sink.unwrapScoped
   )
 
-const end = (stream: Writable) =>
+const endWritable = (stream: Writable) =>
   Effect.async<never, never, void>((resume) => {
     if (stream.closed) {
       resume(Effect.unit())
@@ -95,8 +104,6 @@ const end = (stream: Writable) =>
 
     stream.end(() => resume(Effect.unit()))
   })
-
-const makeSink = <A>(stream: Writable, encoding: BufferEncoding) => Sink.forEach(write<A>(stream, encoding))
 
 const write = <A>(stream: Writable, encoding: BufferEncoding) =>
   (_: A) =>
