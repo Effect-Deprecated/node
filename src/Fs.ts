@@ -27,7 +27,7 @@ const close = effectify(NFS.close, (_) => new ErrnoError(_, "close"))
 
 const open = (path: string, flags?: NFS.OpenMode, mode?: NFS.Mode) =>
   pipe(
-    Effect.acquireRelease(unsafeOpen(path, flags, mode), (fd) => Effect.ignoreLogged(close(fd))),
+    Effect.acquireRelease(unsafeOpen(path, flags, mode), (fd) => Effect.orDie(close(fd))),
     Effect.map((_) => new Fd(_))
   )
 
