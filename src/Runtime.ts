@@ -44,5 +44,5 @@ const interruptAll = (id: FiberId.FiberId) =>
       return Effect.unit()
     }
 
-    return Fiber.interruptAllWith(roots, id)
+    return Fiber.interruptAllAs(roots, id)
   })
