@@ -16,12 +16,12 @@ specifiers:
   '@changesets/cli': ^2.26.0
   '@effect-ts/build-utils': 0.40.3
   '@effect-ts/core': ^0.60.2
-  '@effect/data': ~0.1.0
-  '@effect/io': ~0.1.11
+  '@effect/data': ~0.1.2
+  '@effect/io': ~0.1.12
   '@effect/language-service': 0.0.19
   '@effect/stream': ~0.3.0
   '@effect/vite-plugin': ^0.0.1
-  '@fp-ts/core': ~0.2.0
+  '@fp-ts/core': ~0.2.1
   '@repo-tooling/eslint-plugin-dprint': ^0.0.4
   '@rollup/pluginutils': ^5.0.2
   '@types/benchmark': ^2.1.2
@@ -61,10 +61,10 @@ specifiers:
   vitest-mock-process: ^1.0.4
 
 dependencies:
-  '@effect/data': 0.1.0
-  '@effect/io': 0.1.11
+  '@effect/data': 0.1.2
+  '@effect/io': 0.1.12
   '@effect/stream': 0.3.0
-  '@fp-ts/core': 0.2.0
+  '@fp-ts/core': 0.2.1
 
 devDependencies:
   '@babel/cli': 7.20.7_@babel+core@7.20.12
@@ -672,17 +672,17 @@ packages:
     resolution: {integrity: sha512-/crHGujo0xnuHIYNc1VgP0HGJGFSoSqq88JFXe6FmFyXPpWt8Xu39LyLg7rchsxfXFeEdA9CrIZvLV5eswXV5g==}
     dev: true
 
-  /@effect/data/0.1.0:
-    resolution: {integrity: sha512-p9/AYs06o7IVyKRUvzq73+XnzmYQIkflo+F/IDMJRzulOEdfSyl3+Tvkw0pXVeXqlcKxlTSdos1VYs2wbRFQDg==}
+  /@effect/data/0.1.2:
+    resolution: {integrity: sha512-X0zlbWN/po6LxMQRxRAdIJMiBNpp8ib7FpskVeDmTlJ2id+SrcFoE4R/QnW1YkD2WvnPH2s7AtNLT8Xwx7+GnQ==}
     dependencies:
-      '@fp-ts/core': 0.2.0
+      '@fp-ts/core': 0.2.1
     dev: false
 
-  /@effect/io/0.1.11:
-    resolution: {integrity: sha512-dQLGx6KhuEgGAbb5UDbBi0P+wtSsm33ojlcshf2Ho4soORDd2QRDOMC+ki1EzVENztBhRmUd9Yp8DyICBQtldw==}
+  /@effect/io/0.1.12:
+    resolution: {integrity: sha512-qWEPKQzmkKiKn3bWy7nHJjr5f8ez3VHJ1SnzKOKIAvFq83pbGpCkbaxq4xyL6lIT/1kDG4wZzwSrTAMNoKRB1g==}
     dependencies:
-      '@effect/data': 0.1.0
-      '@fp-ts/core': 0.2.0
+      '@effect/data': 0.1.2
+      '@fp-ts/core': 0.2.1
     dev: false
 
   /@effect/language-service/0.0.19:
@@ -695,9 +695,9 @@ packages:
   /@effect/stream/0.3.0:
     resolution: {integrity: sha512-Q9dCeD56Kz6P3cdBDseWQZL5Gzqqg+chSmQ0Yv6/oS6QlFQnhK0sOA63aks5NYogk/hnQp0mx96nmbhhMhS1HA==}
     dependencies:
-      '@effect/data': 0.1.0
-      '@effect/io': 0.1.11
-      '@fp-ts/core': 0.2.0
+      '@effect/data': 0.1.2
+      '@effect/io': 0.1.12
+      '@fp-ts/core': 0.2.1
     dev: false
 
   /@effect/vite-plugin/0.0.1_vite@4.0.4:
@@ -931,8 +931,8 @@ packages:
     resolution: {integrity: sha512-BCAJBYzghwoJpcUOARJ1tui50HoYJFlV2pJlVMlsEkDFhD8MTtq8xQVpZCRF66RmtkxtGBYINCQ+5H1lRaL35Q==}
     dev: true
 
-  /@fp-ts/core/0.2.0:
-    resolution: {integrity: sha512-oDMfMDId/Op6EHLTBZvhsW6d0XmXZDWQsvcZmC2wXGt+utv8hXGi41IJD8SwBJsvQvoJYe/NRTamDco4Bl7qsQ==}
+  /@fp-ts/core/0.2.1:
+    resolution: {integrity: sha512-gjp/LTCsxqe8KYvPOcMcsEXT+J6tKC4v1nNqK4RZsZcB6pMcQgrullh5Oa371O9WHSULivpgOvjWyeioFevg5g==}
     dev: false
 
   /@fp-ts/data/0.0.41:
