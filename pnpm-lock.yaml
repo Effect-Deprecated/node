@@ -14,9 +14,9 @@ specifiers:
   '@effect-ts/build-utils': 0.40.3
   '@effect-ts/core': ^0.60.2
   '@effect/data': ~0.4.1
-  '@effect/io': ~0.7.0
+  '@effect/io': ~0.8.0
   '@effect/language-service': 0.0.19
-  '@effect/stream': ~0.8.0
+  '@effect/stream': ~0.9.0
   '@effect/vite-plugin': ^0.0.1
   '@repo-tooling/eslint-plugin-dprint': ^0.0.4
   '@rollup/pluginutils': ^5.0.2
@@ -57,8 +57,8 @@ specifiers:
 
 dependencies:
   '@effect/data': 0.4.1
-  '@effect/io': 0.7.0
-  '@effect/stream': 0.8.0
+  '@effect/io': 0.8.0
+  '@effect/stream': 0.9.0
 
 devDependencies:
   '@babel/cli': 7.21.0_@babel+core@7.21.0
@@ -683,18 +683,14 @@ packages:
     resolution: {integrity: sha512-/crHGujo0xnuHIYNc1VgP0HGJGFSoSqq88JFXe6FmFyXPpWt8Xu39LyLg7rchsxfXFeEdA9CrIZvLV5eswXV5g==}
     dev: true
 
-  /@effect/data/0.3.3:
-    resolution: {integrity: sha512-qDeIoVmMErcd9fJLcWsDalmty5NJ/mtv7vAsFtYbH3gOY9jHRst2TWQnUTRjpCr/KTGv+fTX+5qcEDyzymNgGg==}
-    dev: false
-
   /@effect/data/0.4.1:
     resolution: {integrity: sha512-FdQ0qbYL7t+GP5eWdAPC+oeN2w3zqnujrdDLp/sj58UtMxFSHg21crprmbmiAJAWsL5EdB9aZzcisBGn382xHg==}
     dev: false
 
-  /@effect/io/0.7.0:
-    resolution: {integrity: sha512-MYm1gq/z6EGLe/EJ5m09AKbYmMYj+bx53i7zoPV5rmFl19uBgtgP/+hb1LzQtIrE+fTZhVKyzVysfenIMkt02g==}
+  /@effect/io/0.8.0:
+    resolution: {integrity: sha512-JJUs05oiHzh/Eupf5mgeLRFA4RXJAJo2DNxPC4ZVXwhvgJeqJ/G0ftYo3znOO0vKLzXjw8WYrnXPBM1nYLPnfQ==}
     dependencies:
-      '@effect/data': 0.3.3
+      '@effect/data': 0.4.1
     dev: false
 
   /@effect/language-service/0.0.19:
@@ -704,11 +700,11 @@ packages:
       '@fp-ts/data': 0.0.41
     dev: true
 
-  /@effect/stream/0.8.0:
-    resolution: {integrity: sha512-R/5QZYdABOaEB76iqg0wVxDweZDZ/P0/rWqIBN2/S4VDU7UeEQCoyDqqt9gcsKwjH5ma7Ul6Yi3EzCXPe5y7HQ==}
+  /@effect/stream/0.9.0:
+    resolution: {integrity: sha512-oePK3uiOilENsgnSYAM6jSEeuYyrGXv/RctuI8HTuuzvD9oE74Lh3LLKiLZGa/Ec4RlbA1oJmg7bhukydQrOgQ==}
     dependencies:
       '@effect/data': 0.4.1
-      '@effect/io': 0.7.0
+      '@effect/io': 0.8.0
     dev: false
 
   /@effect/vite-plugin/0.0.1_vite@4.1.4:
