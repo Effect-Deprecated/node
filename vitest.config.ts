@@ -16,7 +16,10 @@ export default defineConfig({
   test: {
     include: ["./test/**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
     exclude: ["./test/utils/**/*.ts", "./test/**/*.init.ts"],
-    globals: true
+    globals: true,
+    deps: {
+      inline: ["vitest-mock-process"]
+    }
   },
   resolve: {
     alias: {

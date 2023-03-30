@@ -1,12 +1,7 @@
-name: PR Flow
+name: Deploy to gist
 
 on:
-  pull_request:
-    branches:
-      - 'main'
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+  workflow_dispatch: {}
 
 jobs:
   build:
@@ -42,8 +37,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
       - run: pnpm install
-      - run: pnpm run build
-      - run: pnpm run circular
-      - run: pnpm run test --coverage
-      - run: pnpm run lint
-      # - run: pnpm run docs
+      - run: pnpm run pack
+      - name: upload-to-gist
+        uses: tim-smart/actions-upload-to-gist@v3
+        with:
+          gist_token: ${{ secrets.GIST_TOKEN }}
+          gist_id: 2249154d563bbbdd603cb09e834361e8
+          path: build/artifacts

@@ -25,7 +25,6 @@
     "allowJs": false,
     "checkJs": false,
     "forceConsistentCasingInFileNames": true,
-    "suppressImplicitAnyIndexErrors": true,
     "stripInternal": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
@@ -37,7 +36,6 @@
     "incremental": true,
     "removeComments": false,
     "paths": {
-      "@effect/io/*": ["./node_modules/@effect/io/src/*"],
       "@effect/node": ["./src/index.ts"],
       "@effect/node/test/*": ["./test/*"],
       "@effect/node/examples/*": ["./examples/*"],
@@ -50,14 +48,7 @@
           "1002": "none"
         }
       }
-    ],
-    "transformers": [
-      {
-        "name": "./plugins/tsPlugin.ts",
-        "trace": { "exclude": ["src/**/*.ts", "test/**/*.ts"] }
-      }
-    ],
-    "tsPlusEnabled": false
+    ]
   },
   "include": [],
   "exclude": ["node_modules", "build", "lib"]
