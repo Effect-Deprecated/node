@@ -5,7 +5,7 @@ import { runMain } from "@effect/node/Runtime"
 import * as Stream from "@effect/stream/Stream"
 
 const program = Effect.gen(function*($) {
-  const fs = yield* $(Effect.service(NodeFs))
+  const fs = yield* $(NodeFs)
 
   yield* $(
     pipe(fs.stream(process.argv[2]), Stream.run(fs.sink(process.argv[3])))
